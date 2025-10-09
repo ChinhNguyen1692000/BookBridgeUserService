@@ -1,0 +1,160 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{56868B4A-0404-4AC3-87CC-23A24F74958C}|UserService.Messaging\\UserService.Messaging.csproj|d:\\laptrinh\\prm_book\\bookbridge\\bookbridge\\userservice.messaging\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{56868B4A-0404-4AC3-87CC-23A24F74958C}|UserService.Messaging\\UserService.Messaging.csproj|solutionrelative:userservice.messaging\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{410A35ED-15C7-417C-967C-ADAF5575AF69}|UserService.Infrastructure\\UserService.Infrastructure.csproj|d:\\laptrinh\\prm_book\\bookbridge\\bookbridge\\userservice.infrastructure\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{410A35ED-15C7-417C-967C-ADAF5575AF69}|UserService.Infrastructure\\UserService.Infrastructure.csproj|solutionrelative:userservice.infrastructure\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1AD336D1-9D23-4C4B-84AB-CD1C39E97879}|UserService.Domain\\UserService.Domain.csproj|d:\\laptrinh\\prm_book\\bookbridge\\bookbridge\\userservice.domain\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1AD336D1-9D23-4C4B-84AB-CD1C39E97879}|UserService.Domain\\UserService.Domain.csproj|solutionrelative:userservice.domain\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2312CE25-DF20-43B5-9C9F-2AFCA0AFD345}|UserService.Application\\UserService.Application.csproj|d:\\laptrinh\\prm_book\\bookbridge\\bookbridge\\userservice.application\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2312CE25-DF20-43B5-9C9F-2AFCA0AFD345}|UserService.Application\\UserService.Application.csproj|solutionrelative:userservice.application\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{e8b06f52-6d01-11d2-aa7d-00c04f990343}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Messaging\\Class1.cs",
+              "RelativeDocumentMoniker": "UserService.Messaging\\Class1.cs",
+              "ToolTip": "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Messaging\\Class1.cs",
+              "RelativeToolTip": "UserService.Messaging\\Class1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T01:46:01.662Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Infrastructure\\Class1.cs",
+              "RelativeDocumentMoniker": "UserService.Infrastructure\\Class1.cs",
+              "ToolTip": "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Infrastructure\\Class1.cs",
+              "RelativeToolTip": "UserService.Infrastructure\\Class1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T01:45:16.143Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Domain\\Class1.cs",
+              "RelativeDocumentMoniker": "UserService.Domain\\Class1.cs",
+              "ToolTip": "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Domain\\Class1.cs",
+              "RelativeToolTip": "UserService.Domain\\Class1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T01:44:58.042Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Application\\Class1.cs",
+              "RelativeDocumentMoniker": "UserService.Application\\Class1.cs",
+              "ToolTip": "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Application\\Class1.cs",
+              "RelativeToolTip": "UserService.Application\\Class1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T01:44:36.918Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 119,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:15:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 276,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:4:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:5:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:2:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:6:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:7:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:7:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:9:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:8:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:11:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
