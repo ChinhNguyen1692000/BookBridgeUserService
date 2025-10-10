@@ -1,32 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Infrastructure\\UserService.Infrastructure.csproj": {}
+    "E:\\bookbridge-backend\\UserService.Infrastructure\\UserService.Infrastructure.csproj": {}
   },
   "projects": {
-    "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Infrastructure\\UserService.Infrastructure.csproj": {
+    "E:\\bookbridge-backend\\UserService.Domain\\UserService.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Infrastructure\\UserService.Infrastructure.csproj",
-        "projectName": "UserService.Infrastructure",
-        "projectPath": "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Infrastructure\\UserService.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-        "outputPath": "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Infrastructure\\obj\\",
+        "projectUniqueName": "E:\\bookbridge-backend\\UserService.Domain\\UserService.Domain.csproj",
+        "projectName": "UserService.Domain",
+        "projectPath": "E:\\bookbridge-backend\\UserService.Domain\\UserService.Domain.csproj",
+        "packagesPath": "C:\\Users\\Chinh\\.nuget\\packages\\",
+        "outputPath": "E:\\bookbridge-backend\\UserService.Domain\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\Chinh\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -65,7 +58,85 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.410/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "E:\\bookbridge-backend\\UserService.Infrastructure\\UserService.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\bookbridge-backend\\UserService.Infrastructure\\UserService.Infrastructure.csproj",
+        "projectName": "UserService.Infrastructure",
+        "projectPath": "E:\\bookbridge-backend\\UserService.Infrastructure\\UserService.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Chinh\\.nuget\\packages\\",
+        "outputPath": "E:\\bookbridge-backend\\UserService.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Chinh\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "E:\\bookbridge-backend\\UserService.Domain\\UserService.Domain.csproj": {
+                "projectPath": "E:\\bookbridge-backend\\UserService.Domain\\UserService.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.410/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

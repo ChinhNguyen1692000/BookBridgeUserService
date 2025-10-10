@@ -1,0 +1,64 @@
+services:
+  # 1. Dịch vụ MySQL
+  db:
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p12345"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    image: mysql/mysql-server:8.0
+    container_name: mysql_bookbridge
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345 # Đổi pass này
+      MYSQL_DATABASE: user_service
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # 2. Dịch vụ UserService
+  userservice:
+    build:
+      context: .
+      dockerfile: UserService.Api/Dockerfile
+    container_name: bookbridge_userservice
+    environment:
+      # Thay đổi connection string để trỏ đến container 'db'
+      ConnectionStrings__UserServiceConnection: Server=host.docker.internal;Port=3306;Database=user_service;Uid=bookbridge_userservice;Pwd=bb12345; 
+      Jwt__Key: BookbridgeJWTKey_2025_Secure_ABC123!
+      ASPNETCORE_ENVIRONMENT: Development
+      # Jwt__Issuer: Bookbridge.UserService
+      # Jwt__Audience: Bookbridge.Client
+      # Jwt__ExpirationHours: 24
+      # ... các biến config JWT khác
+    ports:
+      - "5141:8080" # Map cổng 5141 của host đến cổng 8080 trong container
+    depends_on:
+       db:
+          condition: service_healthy # Đảm bảo MySQL đã sẵn sàng trước khi khởi động UserService
+
+  # 3. Dịch vụ API Gateway (Ocelot)
+  gateway:
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile # Thay bằng tên project Gateway của bạn
+    container_name: bookbridge_gateway
+    ports:
+      - "5139:8080"
+    depends_on:
+      - userservice # Phải khởi động sau UserService
+  # 4. Dịch vụ phpMyAdmin
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      container_name: phpmyadmin
+      environment:
+        PMA_HOST: db
+        PMA_PORT: 3306
+      ports:
+        - "8081:80"
+      depends_on:
+        db:
+          condition: service_healthy # Đảm bảo MySQL đã sẵn sàng trước khi khởi động
+
+volumes:
+  mysql_data:

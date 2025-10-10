@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vyEQA1+MIYM=",
+  "dgSpecHash": "6QdDHBuVk8s=",
   "success": true,
-  "projectFilePath": "D:\\LapTrinh\\PRM_BOOK\\bookbridge\\bookbridge\\UserService.Domain\\UserService.Domain.csproj",
+  "projectFilePath": "E:\\bookbridge-backend\\UserService.Domain\\UserService.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
