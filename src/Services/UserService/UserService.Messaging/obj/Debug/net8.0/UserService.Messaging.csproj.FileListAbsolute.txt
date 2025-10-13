@@ -1,0 +1,12 @@
+E:\check-merge\bookbridge-backend\UserService.Messaging\bin\Debug\net8.0\UserService.Messaging.deps.json
+E:\check-merge\bookbridge-backend\UserService.Messaging\bin\Debug\net8.0\UserService.Messaging.dll
+E:\check-merge\bookbridge-backend\UserService.Messaging\bin\Debug\net8.0\UserService.Messaging.pdb
+E:\check-merge\bookbridge-backend\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.GeneratedMSBuildEditorConfig.editorconfig
+E:\check-merge\bookbridge-backend\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.AssemblyInfoInputs.cache
+E:\check-merge\bookbridge-backend\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.AssemblyInfo.cs
+E:\check-merge\bookbridge-backend\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.csproj.CoreCompileInputs.cache
+E:\check-merge\bookbridge-backend\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.sourcelink.json
+E:\check-merge\bookbridge-backend\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.dll
+E:\check-merge\bookbridge-backend\UserService.Messaging\obj\Debug\net8.0\refint\UserService.Messaging.dll
+E:\check-merge\bookbridge-backend\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.pdb
+E:\check-merge\bookbridge-backend\UserService.Messaging\obj\Debug\net8.0\ref\UserService.Messaging.dll

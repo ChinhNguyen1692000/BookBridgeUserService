@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.17">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookstoreService.Application\BookstoreService.Application.csproj" />
+    <ProjectReference Include="..\BookstoreService.Domain\BookstoreService.Domain.csproj" />
+    <ProjectReference Include="..\BookstoreService.Infrastructure\BookstoreService.Infrastructure.csproj" />
+    <ProjectReference Include="..\BookstoreService.Messaging\BookstoreService.Messaging.csproj" />
+  </ItemGroup>
+
+</Project>
