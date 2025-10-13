@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Messaging\\UserService.Messaging.csproj",
+      "projectUniqueName": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Messaging\\UserService.Messaging.csproj",
       "projectName": "UserService.Messaging",
-      "projectPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Messaging\\UserService.Messaging.csproj",
+      "projectPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Messaging\\UserService.Messaging.csproj",
       "packagesPath": "C:\\Users\\Chinh\\.nuget\\packages\\",
-      "outputPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Messaging\\obj\\",
+      "outputPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Messaging\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Chinh\\AppData\\Roaming\\NuGet\\NuGet.Config"

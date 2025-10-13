@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Application\\UserService.Application.csproj": {}
+    "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Application\\UserService.Application.csproj": {}
   },
   "projects": {
-    "E:\\check-merge\\bookbridge-backend\\src\\Services\\Common\\Common.csproj": {
+    "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\Common\\Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\check-merge\\bookbridge-backend\\src\\Services\\Common\\Common.csproj",
+        "projectUniqueName": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\Common\\Common.csproj",
         "projectName": "Common",
-        "projectPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\Common\\Common.csproj",
+        "projectPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\Common\\Common.csproj",
         "packagesPath": "C:\\Users\\Chinh\\.nuget\\packages\\",
-        "outputPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\Common\\obj\\",
+        "outputPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\Common\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Chinh\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -90,14 +90,14 @@
         }
       }
     },
-    "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Application\\UserService.Application.csproj": {
+    "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Application\\UserService.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Application\\UserService.Application.csproj",
+        "projectUniqueName": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Application\\UserService.Application.csproj",
         "projectName": "UserService.Application",
-        "projectPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Application\\UserService.Application.csproj",
+        "projectPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Application\\UserService.Application.csproj",
         "packagesPath": "C:\\Users\\Chinh\\.nuget\\packages\\",
-        "outputPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Application\\obj\\",
+        "outputPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Chinh\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -112,14 +112,14 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "E:\\check-merge\\bookbridge-backend\\src\\Services\\Common\\Common.csproj": {
-                "projectPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\Common\\Common.csproj"
+              "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\Common\\Common.csproj": {
+                "projectPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\Common\\Common.csproj"
               },
-              "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Domain\\UserService.Domain.csproj": {
-                "projectPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Domain\\UserService.Domain.csproj"
+              "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj": {
+                "projectPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj"
               },
-              "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj": {
-                "projectPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj"
+              "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj": {
+                "projectPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj"
               }
             }
           }
@@ -196,14 +196,14 @@
         }
       }
     },
-    "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Domain\\UserService.Domain.csproj": {
+    "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Domain\\UserService.Domain.csproj",
+        "projectUniqueName": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj",
         "projectName": "UserService.Domain",
-        "projectPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Domain\\UserService.Domain.csproj",
+        "projectPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj",
         "packagesPath": "C:\\Users\\Chinh\\.nuget\\packages\\",
-        "outputPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Domain\\obj\\",
+        "outputPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Chinh\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -254,14 +254,14 @@
         }
       }
     },
-    "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj": {
+    "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj",
+        "projectUniqueName": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj",
         "projectName": "UserService.Infrastructure",
-        "projectPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj",
+        "projectPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\Chinh\\.nuget\\packages\\",
-        "outputPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Infrastructure\\obj\\",
+        "outputPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Chinh\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -276,8 +276,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Domain\\UserService.Domain.csproj": {
-                "projectPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Domain\\UserService.Domain.csproj"
+              "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj": {
+                "projectPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj"
               }
             }
           }

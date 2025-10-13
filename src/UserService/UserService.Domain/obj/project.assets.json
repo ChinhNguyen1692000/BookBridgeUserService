@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Domain\\UserService.Domain.csproj",
+      "projectUniqueName": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj",
       "projectName": "UserService.Domain",
-      "projectPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Domain\\UserService.Domain.csproj",
+      "projectPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj",
       "packagesPath": "C:\\Users\\Chinh\\.nuget\\packages\\",
-      "outputPath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Domain\\obj\\",
+      "outputPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Chinh\\AppData\\Roaming\\NuGet\\NuGet.Config"

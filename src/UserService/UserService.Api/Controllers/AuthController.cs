@@ -21,6 +21,8 @@ namespace UserService.API.Controllers
             _authService = authService;
         }
 
+        [HttpGet("/healthz")]
+        public IActionResult HealthCheck() => Ok("Healthy");
 
         // GET: api/Auth
         [Authorize(Roles = "Admin")]

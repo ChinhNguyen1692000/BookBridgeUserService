@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9OYWJF1dJQ8=",
+  "dgSpecHash": "CDR+rf7nr+M=",
   "success": true,
-  "projectFilePath": "E:\\check-merge\\bookbridge-backend\\src\\Services\\UserService\\UserService.Domain\\UserService.Domain.csproj",
+  "projectFilePath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }
