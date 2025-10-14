@@ -21,7 +21,7 @@ namespace UserService.API.Controllers
             _authService = authService;
         }
 
-        [HttpGet("/healthz")]
+        [HttpGet("/api/healthz")] // <-- Change: Explicitly set the absolute path
         public IActionResult HealthCheck() => Ok("Healthy");
 
         // GET: api/Auth
