@@ -56,9 +56,60 @@ namespace UserService.Application.Services
             return await _context.Users.FindAsync(userId);
         }
 
-        // This method handles user registration by validating input, checking for existing users, hashing the password, creating a new user, assigning a default role, and returning a JWT token.
+        // // This method handles user registration by validating input, checking for existing users, hashing the password, creating a new user, assigning a default role, and returning a JWT token.
+        // public async Task<RegisterResponse> Register(RegisterRequest request)
+        // {
+        //     if (request.Password != request.Repassword)
+        //         throw new ArgumentException("Passwords do not match.");
+
+        //     bool userExists = await _context.Users.AnyAsync(u => u.Email == request.Email || u.Username == request.Username);
+        //     if (userExists)
+        //         throw new InvalidOperationException("Email or Username already exists.");
+
+        //     var passwordHash = _passwordHasher.HashPassword(request.Password);
+
+        //     var user = new User
+        //     {
+        //         Id = Guid.NewGuid(),
+        //         Username = request.Username,
+        //         Email = request.Email,
+        //         Phone = request.Phone,
+        //         PasswordHash = passwordHash,
+        //         CreatedAt = DateTime.UtcNow
+        //     };
+
+        //     _context.Users.Add(user);
+
+        //     var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
+        //     if (defaultRole == null)
+        //         throw new InvalidOperationException("Default role 'User' not found.");
+
+        //     _context.UserRoles.Add(new UserRole
+        //     {
+        //         UserId = user.Id,
+        //         RoleId = defaultRole.Id
+        //     });
+
+        //     await _context.SaveChangesAsync();
+
+        //     // Gửi email kích hoạt
+        //     var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.Activation);
+        //     await _emailService.SendActivationOtpEmail(user.Email, otpCode);
+
+        //     var roles = await GetUserRoles(user.Id);
+        //     var registerResponse = new RegisterResponse
+        //     {
+        //         Id = user.Id.ToString(),
+        //         Username = user.Username,
+        //         Email = user.Email,
+        //         Roles = roles
+        //     };
+        //     return registerResponse;
+        // }
+
         public async Task<RegisterResponse> Register(RegisterRequest request)
         {
+            // ... (Code validation và kiểm tra user tồn tại không đổi) ...
             if (request.Password != request.Repassword)
                 throw new ArgumentException("Passwords do not match.");
 
@@ -68,43 +119,66 @@ namespace UserService.Application.Services
 
             var passwordHash = _passwordHasher.HashPassword(request.Password);
 
-            var user = new User
+            // Bắt đầu Transaction
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
             {
-                Id = Guid.NewGuid(),
-                Username = request.Username,
-                Email = request.Email,
-                Phone = request.Phone,
-                PasswordHash = passwordHash,
-                CreatedAt = DateTime.UtcNow
-            };
+                // 1. Chuẩn bị dữ liệu User và Role
+                var user = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Username = request.Username,
+                    Email = request.Email,
+                    Phone = request.Phone,
+                    PasswordHash = passwordHash,
+                    CreatedAt = DateTime.UtcNow
+                };
 
-            _context.Users.Add(user);
+                _context.Users.Add(user);
 
-            var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
-            if (defaultRole == null)
-                throw new InvalidOperationException("Default role 'User' not found.");
+                var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
+                if (defaultRole == null)
+                    throw new InvalidOperationException("Default role 'Buyer' not found.");
 
-            _context.UserRoles.Add(new UserRole
+                _context.UserRoles.Add(new UserRole
+                {
+                    UserId = user.Id,
+                    RoleId = defaultRole.Id
+                });
+
+                // 2. Lưu tạm thời User và Role vào DB (trong Transaction)
+                // Việc này cần thiết vì bước 3 cần User.Id để tạo OTP và lưu vào UserOtps.
+                await _context.SaveChangesAsync();
+
+                // 3. Tạo và gửi Email kích hoạt
+                var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.Activation);
+                // **Đây là bước có thể ném Exception nếu gửi mail thất bại**
+                await _emailService.SendActivationOtpEmail(user.Email, otpCode);
+
+                // 4. Commit Transaction nếu mọi thứ (bao gồm gửi mail) thành công
+                await transaction.CommitAsync();
+
+                // 5. Chuẩn bị Response (sau khi commit)
+                var roles = await GetUserRoles(user.Id);
+                var registerResponse = new RegisterResponse
+                {
+                    Id = user.Id.ToString(),
+                    Username = user.Username,
+                    Email = user.Email,
+                    Roles = roles
+                };
+                return registerResponse;
+            }
+            catch (Exception ex)
             {
-                UserId = user.Id,
-                RoleId = defaultRole.Id
-            });
-
-            await _context.SaveChangesAsync();
-
-            // Gửi email kích hoạt
-            var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.Activation);
-            await _emailService.SendActivationOtpEmail(user.Email, otpCode);
-
-            var roles = await GetUserRoles(user.Id);
-            var registerResponse = new RegisterResponse
-            {
-                Id = user.Id.ToString(),
-                Username = user.Username,
-                Email = user.Email,
-                Roles = roles
-            };
-            return registerResponse;
+                // 6. Rollback Transaction nếu có bất kỳ lỗi nào xảy ra (bao gồm lỗi gửi mail)
+                await transaction.RollbackAsync();
+                // Log lỗi gửi mail/DB... ở đây
+                // throw; // Ném lại lỗi để trả về cho client
+                // Tùy theo logic của bạn, bạn có thể ném lại lỗi để client biết hoặc trả về lỗi chung.
+                throw new Exception("Registration failed, possibly due to a mail sending error.", ex);
+            }
         }
 
 
