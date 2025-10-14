@@ -39,6 +39,7 @@ builder.Services.Configure<GoogleAuthSettings>(
     builder.Configuration.GetSection("GoogleAuth"));
 builder.Services.AddScoped<IPasswordGenerator, PasswordGenerator>();
 builder.Services.AddScoped<IOTPService, OTPService>();
+builder.Services.AddScoped<ICacheService, RedisCacheService>();
 
 
 // 3. JWT
