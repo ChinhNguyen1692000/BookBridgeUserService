@@ -45,6 +45,7 @@ namespace UserService.API.Controllers
         }
 
         // POST: api/Auth/register
+        // Bước 2: Đăng ký đầy đủ, kèm OTP. Kiểm tra OTP, lưu user, kích hoạt tài khoản, vô hiệu hóa OTP.
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
@@ -86,14 +87,22 @@ namespace UserService.API.Controllers
             }
         }
 
-        // POST: api/Auth/active-email
-        [HttpPost("active-email")]
-        public async Task<IActionResult> ActiveEmailAccount([FromBody] OtpRequest otp)
+        // POST: api/Auth/check-email
+        // Bước 1: Nhận email, kiểm tra, tạo user tạm, tạo OTP, log OTP ra
+        [HttpPost("check-email")]
+        public async Task<IActionResult> CheckEmailForRegistration([FromBody] CheckEmailRequest request)
         {
-            var (success, message) = await _authService.ActiveEmailAccount(otp.OtpCode, otp.Email);
-            if (!success)
-                return BadRequest(new { message });
-            return Ok(new { message });
+            try
+            {
+                var response = await _authService.CheckEmailForRegistration(request.Email);
+                // Trả về email cho front-end biết
+                return Ok(new { message = "OTP generated successfully. Please check the server log for the code.", email = request.Email });
+            }
+            catch (Exception ex)
+            {
+                // Nên sử dụng Custom Exception và HttpStatus code phù hợp hơn
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost("login")]

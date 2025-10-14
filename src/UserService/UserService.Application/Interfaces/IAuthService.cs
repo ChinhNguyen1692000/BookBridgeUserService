@@ -19,7 +19,10 @@ namespace UserService.Application.Interfaces
         Task<AuthResponse> GoogleLogin(GoogleLoginRequest request);
 
         // Kích hoạt tài khoản qua email
-        Task<(bool Success, string Message)> ActiveEmailAccount(string otp, string email);
+        Task<bool> CheckEmailForRegistration(string email);
+        // Task<(bool Success, string Message)> ActiveEmailAccount(string otp, string email);
+
+
 
         // Lấy thông tin người dùng bằng ID
         Task<User> GetByIdAsync(Guid userId);
