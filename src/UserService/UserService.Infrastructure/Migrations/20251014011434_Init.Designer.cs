@@ -12,8 +12,8 @@ using UserService.Infrastructure.Data;
 namespace UserService.Infrastructure.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20251013084111_InitialPostgreSetup")]
-    partial class InitialPostgreSetup
+    [Migration("20251014011434_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,7 +135,7 @@ namespace UserService.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            RoleName = "User"
+                            RoleName = "Buyer"
                         },
                         new
                         {
@@ -145,7 +145,7 @@ namespace UserService.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            RoleName = "Bookstore_owner"
+                            RoleName = "Seller"
                         });
                 });
 

@@ -39,5 +39,6 @@ namespace UserService.Application.Interfaces
         // Tạo mới access token từ refresh token
         Task<AuthResponse> RefreshTokenAsync(RefreshTokenRequest request, string oldAccessToken);
 
+        Task<(bool Success, string Message)> ActiveSellerAccount(Guid userId);
     }
 }

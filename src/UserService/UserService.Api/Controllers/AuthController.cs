@@ -60,6 +60,32 @@ namespace UserService.API.Controllers
             }
         }
 
+        [Authorize(Roles = "Buyer")]
+        [HttpPost("active-seller")]
+        public async Task<IActionResult> ActiveSellerAccount()
+        {
+            // Lấy userId từ token
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+            {
+                return Unauthorized(new { message = "User is not authenticated." });
+            }
+
+            try
+            {
+                var (success, message) = await _authService.ActiveSellerAccount(userId);
+                if (!success)
+                    return BadRequest(new { message });
+
+                return Ok(new { message });
+            }
+            catch (Exception ex)
+            {
+                // Nếu muốn log, inject ILogger<AuthController> và gọi logger ở constructor
+                return StatusCode(500, new { message = "Internal server error: " + ex.Message });
+            }
+        }
+
         // POST: api/Auth/active-email
         [HttpPost("active-email")]
         public async Task<IActionResult> ActiveEmailAccount([FromBody] OtpRequest otp)

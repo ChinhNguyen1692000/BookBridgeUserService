@@ -52,3 +52,21 @@ E:\check-merge\bookbridge-backend\src\Services\UserService\UserService.Infrastru
 E:\check-merge\bookbridge-backend\src\Services\UserService\UserService.Infrastructure\obj\Debug\net8.0\UserService.Infrastructure.pdb
 E:\check-merge\bookbridge-backend\src\Services\UserService\UserService.Infrastructure\obj\Debug\net8.0\UserService.Infrastructure.genruntimeconfig.cache
 E:\check-merge\bookbridge-backend\src\Services\UserService\UserService.Infrastructure\obj\Debug\net8.0\ref\UserService.Infrastructure.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\bin\Debug\net8.0\UserService.Infrastructure.deps.json
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\bin\Debug\net8.0\UserService.Infrastructure.runtimeconfig.json
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\bin\Debug\net8.0\UserService.Infrastructure.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\bin\Debug\net8.0\UserService.Infrastructure.pdb
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\bin\Debug\net8.0\UserService.Domain.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\bin\Debug\net8.0\UserService.Domain.pdb
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\obj\Debug\net8.0\UserService.Infrastructure.csproj.AssemblyReference.cache
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\obj\Debug\net8.0\UserService.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\obj\Debug\net8.0\UserService.Infrastructure.AssemblyInfoInputs.cache
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\obj\Debug\net8.0\UserService.Infrastructure.AssemblyInfo.cs
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\obj\Debug\net8.0\UserService.Infrastructure.csproj.CoreCompileInputs.cache
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\obj\Debug\net8.0\UserService.Infrastructure.sourcelink.json
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\obj\Debug\net8.0\UserServ.28B62BA0.Up2Date
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\obj\Debug\net8.0\UserService.Infrastructure.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\obj\Debug\net8.0\refint\UserService.Infrastructure.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\obj\Debug\net8.0\UserService.Infrastructure.pdb
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\obj\Debug\net8.0\UserService.Infrastructure.genruntimeconfig.cache
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Infrastructure\obj\Debug\net8.0\ref\UserService.Infrastructure.dll

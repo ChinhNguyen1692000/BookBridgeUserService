@@ -34,3 +34,15 @@ E:\check-merge\bookbridge-backend\src\Services\UserService\UserService.Domain\ob
 E:\check-merge\bookbridge-backend\src\Services\UserService\UserService.Domain\obj\Debug\net8.0\refint\UserService.Domain.dll
 E:\check-merge\bookbridge-backend\src\Services\UserService\UserService.Domain\obj\Debug\net8.0\UserService.Domain.pdb
 E:\check-merge\bookbridge-backend\src\Services\UserService\UserService.Domain\obj\Debug\net8.0\ref\UserService.Domain.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Domain\bin\Debug\net8.0\UserService.Domain.deps.json
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Domain\bin\Debug\net8.0\UserService.Domain.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Domain\bin\Debug\net8.0\UserService.Domain.pdb
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Domain\obj\Debug\net8.0\UserService.Domain.GeneratedMSBuildEditorConfig.editorconfig
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Domain\obj\Debug\net8.0\UserService.Domain.AssemblyInfoInputs.cache
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Domain\obj\Debug\net8.0\UserService.Domain.AssemblyInfo.cs
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Domain\obj\Debug\net8.0\UserService.Domain.csproj.CoreCompileInputs.cache
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Domain\obj\Debug\net8.0\UserService.Domain.sourcelink.json
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Domain\obj\Debug\net8.0\UserService.Domain.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Domain\obj\Debug\net8.0\refint\UserService.Domain.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Domain\obj\Debug\net8.0\UserService.Domain.pdb
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Domain\obj\Debug\net8.0\ref\UserService.Domain.dll

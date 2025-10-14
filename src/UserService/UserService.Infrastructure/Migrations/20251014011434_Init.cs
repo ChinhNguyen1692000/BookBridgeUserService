@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UserService.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialPostgreSetup : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -150,9 +150,9 @@ namespace UserService.Infrastructure.Migrations
                 columns: new[] { "Id", "RoleName" },
                 values: new object[,]
                 {
-                    { new Guid("11111111-1111-1111-1111-111111111111"), "User" },
+                    { new Guid("11111111-1111-1111-1111-111111111111"), "Buyer" },
                     { new Guid("22222222-2222-2222-2222-222222222222"), "Admin" },
-                    { new Guid("33333333-3333-3333-3333-333333333333"), "Bookstore_owner" }
+                    { new Guid("33333333-3333-3333-3333-333333333333"), "Seller" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -80,7 +80,7 @@ namespace UserService.Application.Services
 
             _context.Users.Add(user);
 
-            var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "User");
+            var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
             if (defaultRole == null)
                 throw new InvalidOperationException("Default role 'User' not found.");
 
@@ -106,6 +106,58 @@ namespace UserService.Application.Services
             };
             return registerResponse;
         }
+
+
+
+        public async Task<(bool Success, string Message)> ActiveSellerAccount(Guid userId)
+        {
+            try
+            {
+                // 1. Check user exists
+                var user = await _context.Users.FindAsync(userId);
+                if (user == null)
+                    return (false, "User not found.");
+
+                // 2. Find Seller role
+                var sellerRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Seller");
+                if (sellerRole == null)
+                    return (false, "Role 'Seller' not found in system.");
+
+                // 3. If already seller -> done
+                var alreadySeller = await _context.UserRoles
+                    .AnyAsync(ur => ur.UserId == userId && ur.RoleId == sellerRole.Id);
+                if (alreadySeller)
+                    return (false, "User is already a seller.");
+
+                // 4. Optionally ensure user is Buyer (business rule from your controller attribute)
+                var buyerRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
+                if (buyerRole != null)
+                {
+                    var isBuyer = await _context.UserRoles
+                        .AnyAsync(ur => ur.UserId == userId && ur.RoleId == buyerRole.Id);
+                    if (!isBuyer)
+                        return (false, "Only users with Buyer role can activate seller account.");
+                }
+                // if buyerRole == null we skip this check (depends on your system)
+
+                // 5. Add Seller role
+                _context.UserRoles.Add(new UserRole
+                {
+                    UserId = userId,
+                    RoleId = sellerRole.Id
+                });
+
+                await _context.SaveChangesAsync();
+
+                return (true, "Seller account activated successfully.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error activating seller account for user {UserId}", userId);
+                return (false, "Internal server error while activating seller account.");
+            }
+        }
+
 
 
         // Kích hoạt tài khoản qua email
@@ -333,7 +385,7 @@ namespace UserService.Application.Services
                 _context.Users.Add(user);
 
                 // Gán role mặc định
-                var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "User");
+                var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
                 if (defaultRole != null)
                 {
                     _context.UserRoles.Add(new UserRole
