@@ -1,14 +1,17 @@
 using System.Net;
 using System.Net.Mail;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 public class EmailService : IEmailService
 {
     private readonly IConfiguration _config;
+    private readonly ILogger<EmailService> _logger;
 
-    public EmailService(IConfiguration config)
+    public EmailService(IConfiguration config, ILogger<EmailService> logger)
     {
         _config = config;
+        _logger = logger; // Gán Logger
     }
 
     public async Task SendPasswordResetEmail(string toEmail, string otpCode)
@@ -19,7 +22,8 @@ public class EmailService : IEmailService
         var smtpPass = _config["Smtp:Password"];
         var fromEmail = _config["Smtp:From"];
 
-        // var resetLink = $"https://yourfrontend.com/reset-password?token={resetToken}";
+        _logger.LogInformation("Attempting to send activation email to {ToEmail}. Host: {SmtpHost}:{SmtpPort}. User: {SmtpUser}",
+                               toEmail, smtpHost, smtpPort, smtpUser);
 
         var message = new MailMessage(fromEmail, toEmail)
         {
@@ -34,7 +38,26 @@ public class EmailService : IEmailService
             EnableSsl = true
         };
 
-        await client.SendMailAsync(message);
+        try
+        {
+            await client.SendMailAsync(message);
+            _logger.LogInformation("Successfully sent activation email to {ToEmail}.", toEmail);
+        }
+        catch (SmtpException ex)
+        {
+            // **Log lỗi SMTP chi tiết**
+            // Lỗi xác thực, lỗi server, lỗi kết nối...
+            _logger.LogError(ex, "SMTP Error (Status Code: {StatusCode}) when sending email to {ToEmail}. Check App Password and SMTP config.",
+                             ex.StatusCode, toEmail);
+            // Re-throw để khối catch trong UserService xử lý Rollback
+            throw new Exception($"Failed to send email to {toEmail} due to SMTP configuration or network error.", ex);
+        }
+        catch (Exception ex)
+        {
+            // Log các lỗi khác (Parsing, Configuration...)
+            _logger.LogError(ex, "General Error when sending email to {ToEmail}.", toEmail);
+            throw;
+        }
     }
 
     public async Task SendTemporaryPasswordEmail(string toEmail, string otpCode)
@@ -44,6 +67,9 @@ public class EmailService : IEmailService
         var smtpUser = _config["Smtp:Username"];
         var smtpPass = _config["Smtp:Password"];
         var fromEmail = _config["Smtp:From"];
+
+        _logger.LogInformation("Attempting to send activation email to {ToEmail}. Host: {SmtpHost}:{SmtpPort}. User: {SmtpUser}",
+                               toEmail, smtpHost, smtpPort, smtpUser);
 
         var message = new MailMessage(fromEmail, toEmail)
         {
@@ -58,7 +84,26 @@ public class EmailService : IEmailService
             EnableSsl = true
         };
 
-        await client.SendMailAsync(message);
+        try
+        {
+            await client.SendMailAsync(message);
+            _logger.LogInformation("Successfully sent activation email to {ToEmail}.", toEmail);
+        }
+        catch (SmtpException ex)
+        {
+            // **Log lỗi SMTP chi tiết**
+            // Lỗi xác thực, lỗi server, lỗi kết nối...
+            _logger.LogError(ex, "SMTP Error (Status Code: {StatusCode}) when sending email to {ToEmail}. Check App Password and SMTP config.",
+                             ex.StatusCode, toEmail);
+            // Re-throw để khối catch trong UserService xử lý Rollback
+            throw new Exception($"Failed to send email to {toEmail} due to SMTP configuration or network error.", ex);
+        }
+        catch (Exception ex)
+        {
+            // Log các lỗi khác (Parsing, Configuration...)
+            _logger.LogError(ex, "General Error when sending email to {ToEmail}.", toEmail);
+            throw;
+        }
     }
 
     public async Task SendActivationOtpEmail(string toEmail, string otpCode)
@@ -68,6 +113,9 @@ public class EmailService : IEmailService
         var smtpUser = _config["Smtp:Username"];
         var smtpPass = _config["Smtp:Password"];
         var fromEmail = _config["Smtp:From"];
+
+        _logger.LogInformation("Attempting to send activation email to {ToEmail}. Host: {SmtpHost}:{SmtpPort}. User: {SmtpUser}",
+                               toEmail, smtpHost, smtpPort, smtpUser);
 
         var message = new MailMessage(fromEmail, toEmail)
         {
@@ -82,6 +130,25 @@ public class EmailService : IEmailService
             EnableSsl = true
         };
 
-        await client.SendMailAsync(message);
+        try
+        {
+            await client.SendMailAsync(message);
+            _logger.LogInformation("Successfully sent activation email to {ToEmail}.", toEmail);
+        }
+        catch (SmtpException ex)
+        {
+            // **Log lỗi SMTP chi tiết**
+            // Lỗi xác thực, lỗi server, lỗi kết nối...
+            _logger.LogError(ex, "SMTP Error (Status Code: {StatusCode}) when sending email to {ToEmail}. Check App Password and SMTP config.",
+                             ex.StatusCode, toEmail);
+            // Re-throw để khối catch trong UserService xử lý Rollback
+            throw new Exception($"Failed to send email to {toEmail} due to SMTP configuration or network error.", ex);
+        }
+        catch (Exception ex)
+        {
+            // Log các lỗi khác (Parsing, Configuration...)
+            _logger.LogError(ex, "General Error when sending email to {ToEmail}.", toEmail);
+            throw;
+        }
     }
 }

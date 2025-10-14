@@ -113,81 +113,91 @@ namespace UserService.Application.Services
             if (request.Password != request.Repassword)
                 throw new ArgumentException("Passwords do not match.");
 
-            // 2. Kiểm tra trùng lặp và đưa ra thông báo cụ thể
-            // Kiểm tra Email
+            // 2. Kiểm tra trùng lặp
             if (await _context.Users.AnyAsync(u => u.Email == request.Email))
                 throw new InvalidOperationException("Email address already exists.");
 
-            // // Kiểm tra Username
-            // if (await _context.Users.AnyAsync(u => u.Username == request.Username))
-            //     throw new InvalidOperationException("Username already exists.");
-
-            // Kiểm tra Phone
             if (await _context.Users.AnyAsync(u => u.Phone == request.Phone))
                 throw new InvalidOperationException("Phone number already exists.");
 
             var passwordHash = _passwordHasher.HashPassword(request.Password);
 
-            // BẮT ĐẦU TRANSACTION
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            // Khai báo ngoài scope để có thể dùng trong khối ExecuteAsync và trả về
+            User user = null;
+            RegisterResponse registerResponse = null;
 
-            try
+            // **SỬ DỤNG EXECUTION STRATEGY ĐỂ TRÁNH LỖI INVALIDOPERATIONEXCEPTION**
+            var strategy = _context.Database.CreateExecutionStrategy();
+
+            await strategy.ExecuteAsync(async () =>
             {
-                // 3. Chuẩn bị dữ liệu User và Role
-                var user = new User
+                // BẮT ĐẦU TRANSACTION
+                using var transaction = await _context.Database.BeginTransactionAsync();
+
+                try
                 {
-                    Id = Guid.NewGuid(),
-                    Username = request.Username,
-                    Email = request.Email,
-                    Phone = request.Phone,
-                    PasswordHash = passwordHash,
-                    CreatedAt = DateTime.UtcNow
-                };
+                    // 3. Chuẩn bị dữ liệu User và Role
+                    user = new User
+                    {
+                        Id = Guid.NewGuid(),
+                        Username = request.Username,
+                        Email = request.Email,
+                        Phone = request.Phone,
+                        PasswordHash = passwordHash,
+                        CreatedAt = DateTime.UtcNow
+                    };
 
-                _context.Users.Add(user);
+                    _context.Users.Add(user);
 
-                var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
-                if (defaultRole == null)
-                    throw new InvalidOperationException("Default role 'Buyer' not found.");
+                    var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
+                    if (defaultRole == null)
+                        throw new InvalidOperationException("Default role 'Buyer' not found.");
 
-                _context.UserRoles.Add(new UserRole
+                    _context.UserRoles.Add(new UserRole
+                    {
+                        UserId = user.Id,
+                        RoleId = defaultRole.Id
+                    });
+
+                    // 4. Lưu thay đổi vào DB (trong Transaction)
+                    await _context.SaveChangesAsync();
+                    _logger.LogInformation("User and Role saved successfully for {Email}.", user.Email);
+
+                    // 5. Tạo OTP và Gửi Email kích hoạt
+                    var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.Activation);
+
+                    // Lệnh này sẽ throw exception nếu gửi mail thất bại, 
+                    // dẫn đến rollback ở khối catch.
+                    await _emailService.SendActivationOtpEmail(user.Email, otpCode);
+
+                    // 6. COMMIT TRANSACTION chỉ khi DB và Gửi Mail đều thành công
+                    await transaction.CommitAsync();
+                    _logger.LogInformation("Transaction committed successfully for {Email}.", user.Email);
+
+                    // 7. Chuẩn bị Response
+                    var roles = await GetUserRoles(user.Id); // Giả định có phương thức này
+                    registerResponse = new RegisterResponse
+                    {
+                        Id = user.Id.ToString(),
+                        Username = user.Username,
+                        Email = user.Email,
+                        Roles = roles
+                    };
+                }
+                catch (Exception ex)
                 {
-                    UserId = user.Id,
-                    RoleId = defaultRole.Id
-                });
+                    // 8. ROLLBACK TRANSACTION nếu có lỗi DB, OTP hoặc lỗi Gửi Mail
+                    await transaction.RollbackAsync();
 
-                // 4. Lưu thay đổi vào DB (trong Transaction)
-                await _context.SaveChangesAsync();
+                    // Log lỗi chi tiết
+                    _logger.LogError(ex, "Registration failed for user {Email}. Transaction rolled back.", request.Email);
 
-                // 5. Tạo và gửi Email kích hoạt
-                var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.Activation);
-                await _emailService.SendActivationOtpEmail(user.Email, otpCode);
+                    // **BẮT BUỘC** re-throw (ném lại) lỗi để Execution Strategy biết rằng thao tác thất bại.
+                    throw;
+                }
+            });
 
-                // 6. COMMIT TRANSACTION
-                await transaction.CommitAsync();
-
-                // 7. Chuẩn bị Response
-                var roles = await GetUserRoles(user.Id);
-                var registerResponse = new RegisterResponse
-                {
-                    Id = user.Id.ToString(),
-                    Username = user.Username,
-                    Email = user.Email,
-                    Roles = roles
-                };
-                return registerResponse;
-            }
-            catch (Exception ex)
-            {
-                // 8. ROLLBACK TRANSACTION nếu gửi mail hoặc các bước khác thất bại
-                await transaction.RollbackAsync();
-
-                // Log lỗi chi tiết
-                // _logger.LogError(ex, "Registration failed for user {Email}. Transaction rolled back.", request.Email); 
-
-                // Thông báo lỗi chung sau khi rollback
-                throw new InvalidOperationException("Registration failed due to an unexpected error (transaction rolled back).", ex);
-            }
+            return registerResponse;
         }
 
 
