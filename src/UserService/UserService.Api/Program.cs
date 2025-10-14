@@ -97,9 +97,29 @@ builder.Services.AddSwaggerGen();
 
 
 // 4. Redis
-var redisConnection = configuration.GetConnectionString("Redis");
-builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnection));
-builder.Services.AddScoped<ICacheService, RedisCacheService>();
+// var redisConnection = configuration.GetConnectionString("Redis");
+// builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnection));
+// builder.Services.AddScoped<ICacheService, RedisCacheService>();
+var redisConnection = builder.Configuration.GetConnectionString("Redis") ?? Environment.GetEnvironmentVariable("ConnectionStrings__Redis");
+
+if (redisConnection.StartsWith("redis://"))
+{
+    redisConnection = redisConnection.Replace("redis://", "");
+}
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    try
+    {
+        return ConnectionMultiplexer.Connect(redisConnection);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Redis connection failed: {ex.Message}");
+        throw;
+    }
+});
+
 
 // 5. MassTransit (Nếu dùng sau này)
 // builder.Services.AddMassTransit(...) 
