@@ -109,22 +109,31 @@ namespace UserService.Application.Services
 
         public async Task<RegisterResponse> Register(RegisterRequest request)
         {
-            // ... (Code validation và kiểm tra user tồn tại không đổi) ...
+            // 1. Validation cơ bản
             if (request.Password != request.Repassword)
                 throw new ArgumentException("Passwords do not match.");
 
-            bool userExists = await _context.Users.AnyAsync(u => u.Email == request.Email || u.Username == request.Username);
-            if (userExists)
-                throw new InvalidOperationException("Email or Username already exists.");
+            // 2. Kiểm tra trùng lặp và đưa ra thông báo cụ thể
+            // Kiểm tra Email
+            if (await _context.Users.AnyAsync(u => u.Email == request.Email))
+                throw new InvalidOperationException("Email address already exists.");
+
+            // // Kiểm tra Username
+            // if (await _context.Users.AnyAsync(u => u.Username == request.Username))
+            //     throw new InvalidOperationException("Username already exists.");
+
+            // Kiểm tra Phone
+            if (await _context.Users.AnyAsync(u => u.Phone == request.Phone))
+                throw new InvalidOperationException("Phone number already exists.");
 
             var passwordHash = _passwordHasher.HashPassword(request.Password);
 
-            // Bắt đầu Transaction
+            // BẮT ĐẦU TRANSACTION
             using var transaction = await _context.Database.BeginTransactionAsync();
 
             try
             {
-                // 1. Chuẩn bị dữ liệu User và Role
+                // 3. Chuẩn bị dữ liệu User và Role
                 var user = new User
                 {
                     Id = Guid.NewGuid(),
@@ -147,19 +156,17 @@ namespace UserService.Application.Services
                     RoleId = defaultRole.Id
                 });
 
-                // 2. Lưu tạm thời User và Role vào DB (trong Transaction)
-                // Việc này cần thiết vì bước 3 cần User.Id để tạo OTP và lưu vào UserOtps.
+                // 4. Lưu thay đổi vào DB (trong Transaction)
                 await _context.SaveChangesAsync();
 
-                // 3. Tạo và gửi Email kích hoạt
+                // 5. Tạo và gửi Email kích hoạt
                 var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.Activation);
-                // **Đây là bước có thể ném Exception nếu gửi mail thất bại**
                 await _emailService.SendActivationOtpEmail(user.Email, otpCode);
 
-                // 4. Commit Transaction nếu mọi thứ (bao gồm gửi mail) thành công
+                // 6. COMMIT TRANSACTION
                 await transaction.CommitAsync();
 
-                // 5. Chuẩn bị Response (sau khi commit)
+                // 7. Chuẩn bị Response
                 var roles = await GetUserRoles(user.Id);
                 var registerResponse = new RegisterResponse
                 {
@@ -172,12 +179,14 @@ namespace UserService.Application.Services
             }
             catch (Exception ex)
             {
-                // 6. Rollback Transaction nếu có bất kỳ lỗi nào xảy ra (bao gồm lỗi gửi mail)
+                // 8. ROLLBACK TRANSACTION nếu gửi mail hoặc các bước khác thất bại
                 await transaction.RollbackAsync();
-                // Log lỗi gửi mail/DB... ở đây
-                // throw; // Ném lại lỗi để trả về cho client
-                // Tùy theo logic của bạn, bạn có thể ném lại lỗi để client biết hoặc trả về lỗi chung.
-                throw new Exception("Registration failed, possibly due to a mail sending error.", ex);
+
+                // Log lỗi chi tiết
+                // _logger.LogError(ex, "Registration failed for user {Email}. Transaction rolled back.", request.Email); 
+
+                // Thông báo lỗi chung sau khi rollback
+                throw new InvalidOperationException("Registration failed due to an unexpected error (transaction rolled back).", ex);
             }
         }
 
