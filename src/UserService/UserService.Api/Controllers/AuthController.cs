@@ -25,7 +25,7 @@ namespace UserService.API.Controllers
         public IActionResult HealthCheck() => Ok("Healthy");
 
         // GET: api/Auth
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllUser([FromQuery] int pageNo, [FromQuery] int pageSize)
         {
@@ -35,7 +35,7 @@ namespace UserService.API.Controllers
 
 
         // GET: api/Auth/{id}
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
@@ -60,7 +60,7 @@ namespace UserService.API.Controllers
             }
         }
 
-        [Authorize(Roles = "Buyer")]
+        [Authorize(Roles = "buyer")]
         [HttpPost("active-seller")]
         public async Task<IActionResult> ActiveSellerAccount()
         {
