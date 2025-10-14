@@ -193,7 +193,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseHttpsRedirection(); // Chỉ bật trong dev
+    // app.UseHttpsRedirection(); // Chỉ bật trong dev
 }
 else
 {
