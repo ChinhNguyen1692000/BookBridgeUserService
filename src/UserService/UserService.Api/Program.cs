@@ -97,7 +97,7 @@ builder.Services.AddSwaggerGen();
 
 
 // 4. Redis
-var redisConnection = builder.Configuration.GetConnectionString("Redis") ?? "localhost:6379";
+var redisConnection = configuration.GetConnectionString("Redis");
 builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnection));
 builder.Services.AddScoped<ICacheService, RedisCacheService>();
 
