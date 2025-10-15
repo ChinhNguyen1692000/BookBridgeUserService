@@ -167,7 +167,7 @@ namespace UserService.Application.Services
                 throw new InvalidOperationException("Account is already active. Please login");
 
             // 3. Kiểm tra trùng lặp cho các trường còn lại
-            if (!string.IsNullOrWhiteSpace(request.Username))
+            if (string.IsNullOrWhiteSpace(request.Username))
                 throw new InvalidOperationException("Username is required.");
 
             if (!string.IsNullOrWhiteSpace(request.Phone) && await _context.Users.AnyAsync(u => u.Phone == request.Phone && u.Id != user.Id))
