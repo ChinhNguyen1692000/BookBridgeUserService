@@ -1,154 +1,72 @@
-using System.Net;
-using System.Net.Mail;
+using System.Text;
+using System.Text.Json;
+using Google.Apis.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using NetHttpClientFactory = System.Net.Http.IHttpClientFactory;
+
+
 
 public class EmailService : IEmailService
 {
     private readonly IConfiguration _config;
     private readonly ILogger<EmailService> _logger;
+    private readonly NetHttpClientFactory _httpClientFactory;
 
-    public EmailService(IConfiguration config, ILogger<EmailService> logger)
+    public EmailService(IConfiguration config, ILogger<EmailService> logger, NetHttpClientFactory httpClientFactory)
     {
         _config = config;
-        _logger = logger; // Gán Logger
+        _logger = logger;
+        _httpClientFactory = httpClientFactory;
+    }
+
+    private async Task SendEmailViaResend(string toEmail, string subject, string htmlBody)
+    {
+        var apiKey = _config["Resend:ApiKey"];
+        var fromEmail = _config["Resend:From"];
+
+        var client = _httpClientFactory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
+
+        var payload = new
+        {
+            from = fromEmail,
+            to = toEmail,
+            subject = subject,
+            html = htmlBody
+        };
+
+        var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+        var response = await client.PostAsync("https://api.resend.com/emails", content);
+
+        var result = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            _logger.LogError("Resend API error: {StatusCode} - {Response}", response.StatusCode, result);
+            throw new Exception($"Resend failed: {result}");
+        }
+
+        _logger.LogInformation("Email sent to {ToEmail} via Resend.", toEmail);
     }
 
     public async Task SendPasswordResetEmail(string toEmail, string otpCode)
     {
-        var smtpHost = _config["Smtp:Host"];
-        var smtpPort = int.Parse(_config["Smtp:Port"]);
-        var smtpUser = _config["Smtp:Username"];
-        var smtpPass = _config["Smtp:Password"];
-        var fromEmail = _config["Smtp:From"];
-
-        _logger.LogInformation("Attempting to send activation email to {ToEmail}. Host: {SmtpHost}:{SmtpPort}. User: {SmtpUser}",
-                               toEmail, smtpHost, smtpPort, smtpUser);
-
-        var message = new MailMessage(fromEmail, toEmail)
-        {
-            Subject = "Đặt lại mật khẩu BookBridge",
-            Body = $"Chào bạn,\n\nBạn vừa yêu cầu đặt lại mật khẩu. Nhập otp sau đây để tạo mật khẩu mới:\n{otpCode}\nMã sẽ hết hạn sau 5 phút",
-            IsBodyHtml = false
-        };
-
-        using var client = new SmtpClient(smtpHost, smtpPort)
-        {
-            Credentials = new NetworkCredential(smtpUser, smtpPass),
-            EnableSsl = true
-        };
-
-        try
-        {
-            await client.SendMailAsync(message);
-            _logger.LogInformation("Successfully sent activation email to {ToEmail}.", toEmail);
-        }
-        catch (SmtpException ex)
-        {
-            // **Log lỗi SMTP chi tiết**
-            // Lỗi xác thực, lỗi server, lỗi kết nối...
-            _logger.LogError(ex, "SMTP Error (Status Code: {StatusCode}) when sending email to {ToEmail}. Check App Password and SMTP config.",
-                             ex.StatusCode, toEmail);
-            // Re-throw để khối catch trong UserService xử lý Rollback
-            throw new Exception($"Failed to send email to {toEmail} due to SMTP configuration or network error.", ex);
-        }
-        catch (Exception ex)
-        {
-            // Log các lỗi khác (Parsing, Configuration...)
-            _logger.LogError(ex, "General Error when sending email to {ToEmail}.", toEmail);
-            throw;
-        }
+        var subject = "Đặt lại mật khẩu BookBridge";
+        var html = $"<p>Chào bạn,</p><p>Bạn vừa yêu cầu đặt lại mật khẩu. Mã OTP của bạn là:</p><h2>{otpCode}</h2><p>Mã sẽ hết hạn sau 5 phút.</p>";
+        await SendEmailViaResend(toEmail, subject, html);
     }
 
     public async Task SendTemporaryPasswordEmail(string toEmail, string otpCode)
     {
-        var smtpHost = _config["Smtp:Host"];
-        var smtpPort = int.Parse(_config["Smtp:Port"]);
-        var smtpUser = _config["Smtp:Username"];
-        var smtpPass = _config["Smtp:Password"];
-        var fromEmail = _config["Smtp:From"];
-
-        _logger.LogInformation("Attempting to send activation email to {ToEmail}. Host: {SmtpHost}:{SmtpPort}. User: {SmtpUser}",
-                               toEmail, smtpHost, smtpPort, smtpUser);
-
-        var message = new MailMessage(fromEmail, toEmail)
-        {
-            Subject = "Mật khẩu tạm thời BookBridge",
-            Body = $"Chào bạn,\n\nMã OTP kích hoạt tài khoản của bạn là: {otpCode}\nMã sẽ hết hạn sau 5 phút.",
-            IsBodyHtml = false
-        };
-
-        using var client = new SmtpClient(smtpHost, smtpPort)
-        {
-            Credentials = new NetworkCredential(smtpUser, smtpPass),
-            EnableSsl = true
-        };
-
-        try
-        {
-            await client.SendMailAsync(message);
-            _logger.LogInformation("Successfully sent activation email to {ToEmail}.", toEmail);
-        }
-        catch (SmtpException ex)
-        {
-            // **Log lỗi SMTP chi tiết**
-            // Lỗi xác thực, lỗi server, lỗi kết nối...
-            _logger.LogError(ex, "SMTP Error (Status Code: {StatusCode}) when sending email to {ToEmail}. Check App Password and SMTP config.",
-                             ex.StatusCode, toEmail);
-            // Re-throw để khối catch trong UserService xử lý Rollback
-            throw new Exception($"Failed to send email to {toEmail} due to SMTP configuration or network error.", ex);
-        }
-        catch (Exception ex)
-        {
-            // Log các lỗi khác (Parsing, Configuration...)
-            _logger.LogError(ex, "General Error when sending email to {ToEmail}.", toEmail);
-            throw;
-        }
+        var subject = "Mật khẩu tạm thời BookBridge";
+        var html = $"<p>Chào bạn,</p><p>Mã OTP kích hoạt tài khoản của bạn là:</p><h2>{otpCode}</h2><p>Mã sẽ hết hạn sau 5 phút.</p>";
+        await SendEmailViaResend(toEmail, subject, html);
     }
 
     public async Task SendActivationOtpEmail(string toEmail, string otpCode)
     {
-        var smtpHost = _config["Smtp:Host"];
-        var smtpPort = int.Parse(_config["Smtp:Port"]);
-        var smtpUser = _config["Smtp:Username"];
-        var smtpPass = _config["Smtp:Password"];
-        var fromEmail = _config["Smtp:From"];
-
-        _logger.LogInformation("Attempting to send activation email to {ToEmail}. Host: {SmtpHost}:{SmtpPort}. User: {SmtpUser}",
-                               toEmail, smtpHost, smtpPort, smtpUser);
-
-        var message = new MailMessage(fromEmail, toEmail)
-        {
-            Subject = "Kích hoạt tài khoản BookBridge",
-            Body = $"Chào bạn,\n\nMã OTP kích hoạt tài khoản của bạn là: {otpCode}\nMã sẽ hết hạn sau 5 phút.",
-            IsBodyHtml = false
-        };
-
-        using var client = new SmtpClient(smtpHost, smtpPort)
-        {
-            Credentials = new NetworkCredential(smtpUser, smtpPass),
-            EnableSsl = true
-        };
-
-        try
-        {
-            await client.SendMailAsync(message);
-            _logger.LogInformation("Successfully sent activation email to {ToEmail}.", toEmail);
-        }
-        catch (SmtpException ex)
-        {
-            // **Log lỗi SMTP chi tiết**
-            // Lỗi xác thực, lỗi server, lỗi kết nối...
-            _logger.LogError(ex, "SMTP Error (Status Code: {StatusCode}) when sending email to {ToEmail}. Check App Password and SMTP config.",
-                             ex.StatusCode, toEmail);
-            // Re-throw để khối catch trong UserService xử lý Rollback
-            throw new Exception($"Failed to send email to {toEmail} due to SMTP configuration or network error.", ex);
-        }
-        catch (Exception ex)
-        {
-            // Log các lỗi khác (Parsing, Configuration...)
-            _logger.LogError(ex, "General Error when sending email to {ToEmail}.", toEmail);
-            throw;
-        }
+        var subject = "Kích hoạt tài khoản BookBridge";
+        var html = $"<p>Chào bạn,</p><p>Mã OTP kích hoạt tài khoản của bạn là:</p><h2>{otpCode}</h2><p>Mã sẽ hết hạn sau 5 phút.</p>";
+        await SendEmailViaResend(toEmail, subject, html);
     }
 }

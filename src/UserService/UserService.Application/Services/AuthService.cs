@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Logging;
 using System.Net.Mail;
 using System.Net.Http.Headers;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 
 namespace UserService.Application.Services
@@ -78,7 +79,7 @@ namespace UserService.Application.Services
         {
 
             var user = await _context.Users
-                .Include(u => u.UserRoles) 
+                .Include(u => u.UserRoles)
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
             // Kiểm tra xem người dùng có tồn tại không
@@ -964,6 +965,18 @@ namespace UserService.Application.Services
             }
 
             return authResponse;
+        }
+
+        public async Task<string> CheckSendMail(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            // 2. Tạo và lưu OTP
+            // Giả định _otpService.GenerateAndStoreOtpAsync trả về string OTP
+            var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.ResetPassword);
+
+            // **BỎ QUA:** Không gửi email nữa, nên loại bỏ dòng này
+            await _emailService.SendPasswordResetEmail(user.Email, otpCode);
+            return "Send Mail OK";
         }
     }
 }

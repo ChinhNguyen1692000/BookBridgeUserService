@@ -45,5 +45,7 @@ namespace UserService.Application.Interfaces
         Task<(bool Success, string Message)> ActiveSellerAccount(Guid userId);
 
         Task<string> DeleteUserAsync(Guid userId);
+
+        Task<string> CheckSendMail(string email);
     }
 }
