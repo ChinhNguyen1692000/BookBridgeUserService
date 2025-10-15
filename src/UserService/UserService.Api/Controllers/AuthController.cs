@@ -36,7 +36,7 @@ namespace UserService.API.Controllers
 
         // GET: api/Auth/{id}
         [Authorize(Roles = "Admin")]
-        [HttpGet("detById")]
+        [HttpGet("getById")]
         public async Task<IActionResult> GetUserById([FromQuery] Guid id)
         {
             var user = await _authService.GetByIdAsync(id);
