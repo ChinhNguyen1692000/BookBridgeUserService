@@ -76,27 +76,17 @@ namespace UserService.Application.Services
         // Get user by ID// Get user by ID
         public async Task<User> GetByIdAsync(Guid userId)
         {
-            // Tải người dùng và các Roles liên quan (Eager Loading)
-            // Dùng SingleOrDefaultAsync hoặc FirstOrDefaultAsync để đảm bảo truy vấn được thực thi
-            // FindAsync chỉ tốt khi truy vấn theo khóa chính ĐƠN, và không hỗ trợ Include.
+
             var user = await _context.Users
-                .Include(u => u.UserRoles) // Tải Collection UserRoles
-                                           // .ThenInclude(ur => ur.Role) // Bỏ comment nếu muốn tải thêm thông tin Role chi tiết
+                .Include(u => u.UserRoles) 
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
             // Kiểm tra xem người dùng có tồn tại không
             if (user == null)
             {
-                return null; // Hoặc ném ngoại lệ NotFound tùy theo logic ứng dụng
+                return null;
             }
-
-            // 2. Ẩn mật khẩu (nên dùng DTO thay vì sửa đổi Model trực tiếp)
             user.PasswordHash = "**********";
-
-            // 3. Loại bỏ đoạn mã lỗi:
-            // User.UserRoles = (ICollection<UserRole>)await _context.UserRoles.FindAsync(userId);
-            // Vấn đề này đã được giải quyết bằng .Include() ở bước 1.
-
             return user;
         }
 

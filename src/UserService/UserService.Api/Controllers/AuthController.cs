@@ -26,7 +26,7 @@ namespace UserService.API.Controllers
 
         // GET: api/Auth
         [Authorize(Roles = "Admin")]
-        [HttpGet]
+        [HttpGet("getAll")]
         public async Task<IActionResult> GetAllUser([FromQuery] int pageNo, [FromQuery] int pageSize)
         {
             var list = await _authService.GetAllAsync(pageNo, pageSize);
@@ -36,7 +36,7 @@ namespace UserService.API.Controllers
 
         // GET: api/Auth/{id}
         [Authorize(Roles = "Admin")]
-        [HttpGet("{id}")]
+        [HttpGet("getById/{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
             var user = await _authService.GetByIdAsync(id);
