@@ -88,19 +88,20 @@ namespace UserService.API.Controllers
         }
 
         // POST: api/Auth/check-email
-        // Bước 1: Nhận email, kiểm tra, tạo user tạm, tạo OTP, log OTP ra
+        // Bước 1: Nhận email, kiểm tra cú pháp (bởi [EmailAddress]), kiểm tra trùng lặp DB, tạo OTP
         [HttpPost("check-email")]
         public async Task<IActionResult> CheckEmailForRegistration([FromBody] CheckEmailRequest request)
         {
+            // 🚨 KHÔNG CẦN Thêm ModelState.IsValid nếu dùng [ApiController]
+            // Vì [ApiController] tự động kiểm tra cú pháp và trả về 400 nếu Validation thất bại.
+
             try
             {
                 var response = await _authService.CheckEmailForRegistration(request.Email);
-                // Trả về email cho front-end biết
-                return Ok(new { message = "OTP generated successfully. Please check the server log for the code.", email = request.Email });
+                return Ok(new { message = "OTP generated successfully. Please check the server log for the code.", response });
             }
             catch (Exception ex)
             {
-                // Nên sử dụng Custom Exception và HttpStatus code phù hợp hơn
                 return BadRequest(new { message = ex.Message });
             }
         }

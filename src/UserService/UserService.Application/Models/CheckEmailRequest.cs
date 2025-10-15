@@ -1,24 +1,28 @@
-// DTO cho bước 1: Chỉ nhập email
+// Tệp: DTOs/CheckEmailRequest.cs
+
 using System.ComponentModel.DataAnnotations;
 
 public class CheckEmailRequest
 {
-    [Required]
-    [EmailAddress]
+    // THAY ĐỔI: Thêm thuộc tính validation
+    [Required(ErrorMessage = "Email is required.")]
+    [EmailAddress(ErrorMessage = "Invalid email format.")] 
     public string Email { get; set; }
 }
 
-// DTO cho bước 2: Đăng ký đầy đủ (có thêm OtpCode)
+// Tệp: DTOs/RegisterRequest.cs
+
 public class RegisterRequest
 {
     [Required]
     public string Username { get; set; }
 
-    [Required]
-    [EmailAddress]
+    // THAY ĐỔI: Thêm thuộc tính validation
+    [Required(ErrorMessage = "Email is required.")]
+    [EmailAddress(ErrorMessage = "Invalid email format.")]
     public string Email { get; set; }
-
-    // Giả sử có thêm Phone như trong code cũ
+    
+    // Giả sử có thêm Phone
     public string Phone { get; set; }
 
     [Required]
@@ -28,5 +32,5 @@ public class RegisterRequest
     public string Repassword { get; set; }
 
     [Required]
-    public string OtpCode { get; set; } // Thêm trường OTP
+    public string OtpCode { get; set; } 
 }

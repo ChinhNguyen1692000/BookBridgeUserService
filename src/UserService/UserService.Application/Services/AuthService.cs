@@ -151,102 +151,103 @@ namespace UserService.Application.Services
 
 
         public async Task<RegisterResponse> Register(RegisterRequest request)
-    {
-        // 1. Validation cơ bản
-        if (request.Password != request.Repassword)
-            throw new ArgumentException("Passwords do not match.");
-
-        // 2. Tìm User TẠM đã tạo ở bước 1
-        var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == request.Email);
-
-        if (user == null)
-            throw new InvalidOperationException("Registration process not started. Please check email first.");
-        
-        if (user.IsActive)
-            throw new InvalidOperationException("Account is already active.");
-
-        // 3. Kiểm tra trùng lặp cho các trường còn lại
-        if (!string.IsNullOrWhiteSpace(request.Username) && await _context.Users.AnyAsync(u => u.Username == request.Username && u.Id != user.Id))
-            throw new InvalidOperationException("Username already exists.");
-
-        if (!string.IsNullOrWhiteSpace(request.Phone) && await _context.Users.AnyAsync(u => u.Phone == request.Phone && u.Id != user.Id))
-            throw new InvalidOperationException("Phone number already exists.");
-
-
-        // 4. Kiểm tra và vô hiệu hóa OTP (thay thế cho ActiveEmailAccount cũ)
-        var userOtp = await _context.UserOtps
-             .FirstOrDefaultAsync(u => u.OtpCode == request.OtpCode
-                             && u.Type == OtpType.Activation
-                             && !u.IsUsed
-                             && u.UserId == user.Id); // Quan trọng: OTP phải khớp với User tạm
-
-        if (userOtp == null)
-            throw new InvalidOperationException("Invalid or non-existent OTP.");
-        if (userOtp.Expiry < DateTime.UtcNow)
-            throw new InvalidOperationException("OTP has expired.");
-            
-        // 5. BẮT ĐẦU TRANSACTION
-        var strategy = _context.Database.CreateExecutionStrategy();
-        RegisterResponse registerResponse = null;
-
-        await strategy.ExecuteAsync(async () =>
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
+            // 1. Validation cơ bản
+            if (request.Password != request.Repassword)
+                throw new ArgumentException("Passwords do not match.");
 
-            try
+            // 2. Tìm User TẠM đã tạo ở bước 1
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == request.Email);
+
+            if (user == null)
+                throw new InvalidOperationException("Registration process not started. Please check email first.");
+
+            if (user.IsActive)
+                throw new InvalidOperationException("Account is already active. Please login");
+
+            // 3. Kiểm tra trùng lặp cho các trường còn lại
+            if (!string.IsNullOrWhiteSpace(request.Username))
+                throw new InvalidOperationException("Username is required.");
+
+            if (!string.IsNullOrWhiteSpace(request.Phone) && await _context.Users.AnyAsync(u => u.Phone == request.Phone && u.Id != user.Id))
+                throw new InvalidOperationException("Phone number already exists.");
+
+
+            // 4. Kiểm tra và vô hiệu hóa OTP (thay thế cho ActiveEmailAccount cũ)
+            var userOtp = await _context.UserOtps
+                 .FirstOrDefaultAsync(u => u.OtpCode == request.OtpCode
+                                 && u.Type == OtpType.Activation
+                                 && !u.IsUsed
+                                 && u.UserId == user.Id); // Quan trọng: OTP phải khớp với User tạm
+
+            if (userOtp == null)
+                throw new InvalidOperationException("Invalid or non-existent OTP.");
+            if (userOtp.Expiry < DateTime.UtcNow)
+                throw new InvalidOperationException("OTP has expired.");
+
+            // 5. BẮT ĐẦU TRANSACTION
+            var strategy = _context.Database.CreateExecutionStrategy();
+            RegisterResponse registerResponse = null;
+
+            await strategy.ExecuteAsync(async () =>
             {
-                // 6. Cập nhật thông tin User TẠM
-                var passwordHash = _passwordHasher.HashPassword(request.Password);
-                
-                user.Username = request.Username;
-                user.Phone = request.Phone;
-                user.PasswordHash = passwordHash;
-                user.IsActive = true; // Kích hoạt tài khoản
-                
-                _context.Users.Update(user);
+                using var transaction = await _context.Database.BeginTransactionAsync();
 
-                // 7. Vô hiệu hóa OTP
-                userOtp.IsUsed = true;
-                _context.UserOtps.Update(userOtp);
-
-                // 8. Gán Role mặc định
-                var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
-                if (defaultRole == null)
-                    throw new InvalidOperationException("Default role 'Buyer' not found.");
-
-                _context.UserRoles.Add(new UserRole
+                try
                 {
-                    UserId = user.Id,
-                    RoleId = defaultRole.Id
-                });
+                    // 6. Cập nhật thông tin User TẠM
+                    var passwordHash = _passwordHasher.HashPassword(request.Password);
 
-                // 9. Lưu thay đổi và Commit Transaction
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-                
-                _logger.LogInformation("Account registered and activated successfully for {Email}.", user.Email);
+                    user.Username = request.Username;
+                    user.Phone = request.Phone;
+                    user.PasswordHash = passwordHash;
+                    user.IsActive = true; // Kích hoạt tài khoản
+                    user.IsGoogleUser = false;
 
-                // 10. Chuẩn bị Response
-                var roles = await GetUserRoles(user.Id); // Giả định có phương thức này
-                registerResponse = new RegisterResponse
+                    _context.Users.Update(user);
+
+                    // 7. Vô hiệu hóa OTP
+                    userOtp.IsUsed = true;
+                    _context.UserOtps.Update(userOtp);
+
+                    // 8. Gán Role mặc định
+                    var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
+                    if (defaultRole == null)
+                        throw new InvalidOperationException("Default role 'Buyer' not found.");
+
+                    _context.UserRoles.Add(new UserRole
+                    {
+                        UserId = user.Id,
+                        RoleId = defaultRole.Id
+                    });
+
+                    // 9. Lưu thay đổi và Commit Transaction
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+
+                    _logger.LogInformation("Account registered and activated successfully for {Email}.", user.Email);
+
+                    // 10. Chuẩn bị Response
+                    var roles = await GetUserRoles(user.Id); // Giả định có phương thức này
+                    registerResponse = new RegisterResponse
+                    {
+                        Id = user.Id.ToString(),
+                        Username = user.Username,
+                        Email = user.Email,
+                        Roles = roles
+                    };
+                }
+                catch (Exception ex)
                 {
-                    Id = user.Id.ToString(),
-                    Username = user.Username,
-                    Email = user.Email,
-                    Roles = roles
-                };
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync();
-                _logger.LogError(ex, "Registration failed for user {Email}. Transaction rolled back.", request.Email);
-                throw;
-            }
-        });
+                    await transaction.RollbackAsync();
+                    _logger.LogError(ex, "Registration failed for user {Email}. Transaction rolled back.", request.Email);
+                    throw;
+                }
+            });
 
-        return registerResponse;
-    }
+            return registerResponse;
+        }
 
 
 
@@ -348,50 +349,73 @@ namespace UserService.Application.Services
         //     return (true, "Account activated successfully.");
         // }
 
-        public async Task<bool> CheckEmailForRegistration(string email)
-    {
-        // 1. Kiểm tra trùng lặp email
-        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-
-        if (existingUser != null && existingUser.IsActive)
+        public async Task<RegisterResponse> CheckEmailForRegistration(string email)
         {
-            throw new InvalidOperationException("Email address already exists and is active.");
+            // 1. Kiểm tra email đã active chưa
+            var existingActiveUser = await _context.Users
+                .AnyAsync(u => u.Email == email && u.IsActive);
+            if (existingActiveUser)
+                throw new InvalidOperationException("Email address already exists and is active. Please log in.");
+
+            // 2. Kiểm tra user tạm (chưa active)
+            var tempUser = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == email && !u.IsActive);
+
+            if (tempUser != null)
+            {
+                // Xóa OTP cũ chưa sử dụng của user này
+                var oldOtps = await _context.UserOtps
+                    .Where(o => o.UserId == tempUser.Id && o.Type == OtpType.Activation && !o.IsUsed)
+                    .ToListAsync();
+
+                _context.UserOtps.RemoveRange(oldOtps);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                // Nếu chưa có user tạm → tạo user tạm
+                tempUser = new User
+                {
+                    Id = Guid.NewGuid(),
+                    Email = email,
+                    Username = "Justin",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = false,
+                    IsGoogleUser = false
+                };
+                _context.Users.Add(tempUser);
+
+                var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "User");
+                if (defaultRole == null)
+                    throw new InvalidOperationException("Default role 'User' not found.");
+
+                _context.UserRoles.Add(new UserRole
+                {
+                    UserId = tempUser.Id,
+                    RoleId = defaultRole.Id
+                });
+
+                await _context.SaveChangesAsync();
+            }
+
+            // 3. Tạo OTP mới
+            var otpCode = await _otpService.GenerateAndStoreOtpAsync(tempUser.Id, OtpType.Activation);
+
+            var roles = await GetUserRoles(tempUser.Id);
+            var registerResponse = new RegisterResponse
+            {
+                Id = tempUser.Id.ToString(),
+                Username = tempUser.Username,
+                Email = tempUser.Email,
+                Roles = roles,
+                OtpCode = otpCode
+            };
+
+            _logger.LogWarning("Registration OTP for {Email}: {OtpCode}", email, otpCode);
+
+            return registerResponse;
         }
-        
-        // 2. Xóa user TẠM và OTP cũ (nếu có) để tạo lại
-        if (existingUser != null && !existingUser.IsActive)
-        {
-            // Xóa OTP cũ liên quan đến user này (nếu có)
-            var oldOtps = await _context.UserOtps
-                .Where(o => o.UserId == existingUser.Id && o.Type == OtpType.Activation && !o.IsUsed)
-                .ToListAsync();
-            _context.UserOtps.RemoveRange(oldOtps);
-            
-            // Xóa user tạm
-            _context.Users.Remove(existingUser);
-            await _context.SaveChangesAsync();
-        }
 
-        // 3. Tạo User TẠM (chỉ với Email)
-        var user = new User
-        {
-            Id = Guid.NewGuid(),
-            Email = email,
-            IsActive = false, // Chưa active
-            CreatedAt = DateTime.UtcNow
-            // Các trường khác (Username, PasswordHash) sẽ trống/null
-        };
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
-        
-        // 4. Tạo và Lưu OTP
-        var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.Activation);
-        
-        // **VÌ BẠN KHÔNG THỂ GỬI MAIL TRÊN RENDER: LOG OTP RA**
-        _logger.LogWarning("Registration OTP for {Email}: {OtpCode}", email, otpCode);
-
-        return true;
-    }
 
 
         // This method handles user login by validating credentials and generating a JWT token.
