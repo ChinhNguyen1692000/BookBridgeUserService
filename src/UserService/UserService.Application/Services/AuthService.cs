@@ -211,16 +211,16 @@ namespace UserService.Application.Services
                     userOtp.IsUsed = true;
                     _context.UserOtps.Update(userOtp);
 
-                    // 8. Gán Role mặc định
-                    var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
-                    if (defaultRole == null)
-                        throw new InvalidOperationException("Default role 'Buyer' not found.");
+                    // // 8. Gán Role mặc định
+                    // var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
+                    // if (defaultRole == null)
+                    //     throw new InvalidOperationException("Default role 'Buyer' not found.");
 
-                    _context.UserRoles.Add(new UserRole
-                    {
-                        UserId = user.Id,
-                        RoleId = defaultRole.Id
-                    });
+                    // _context.UserRoles.Add(new UserRole
+                    // {
+                    //     UserId = user.Id,
+                    //     RoleId = defaultRole.Id
+                    // });
 
                     // 9. Lưu thay đổi và Commit Transaction
                     await _context.SaveChangesAsync();
