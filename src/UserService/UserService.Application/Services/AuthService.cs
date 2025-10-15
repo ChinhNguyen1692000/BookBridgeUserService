@@ -281,7 +281,12 @@ namespace UserService.Application.Services
                     await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
 
-                    _logger.LogInformation("Account registered and activated successfully for {Email}.", user.Email);
+                    // _logger.LogInformation("Account registered and activated successfully for {Email}.", user.Email);
+                    // 3. Tạo OTP mới
+                    var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.Activation);
+                    // Gửi OTP kích hoạt
+                    await _emailService.SendActivationOtpEmail(user.Email, otpCode);
+
 
                     // 10. Chuẩn bị Response
                     var roles = await GetUserRoles(user.Id); // Giả định có phương thức này
@@ -455,6 +460,8 @@ namespace UserService.Application.Services
 
             // 3. Tạo OTP mới
             var otpCode = await _otpService.GenerateAndStoreOtpAsync(tempUser.Id, OtpType.Activation);
+            // Gửi OTP kích hoạt
+            await _emailService.SendActivationOtpEmail(tempUser.Email, otpCode);
 
             var roles = await GetUserRoles(tempUser.Id);
             var registerResponse = new RegisterResponse
@@ -466,7 +473,9 @@ namespace UserService.Application.Services
                 OtpCode = otpCode
             };
 
-            _logger.LogWarning("Registration OTP for {Email}: {OtpCode}", email, otpCode);
+            // _logger.LogWarning("Registration OTP for {Email}: {OtpCode}", email, otpCode);
+
+
 
             return registerResponse;
         }
@@ -541,7 +550,7 @@ namespace UserService.Application.Services
                 var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.ResetPassword);
 
                 // **BỎ QUA:** Không gửi email nữa, nên loại bỏ dòng này
-                // await _emailService.SendPasswordResetEmail(user.Email, otpCode);
+                await _emailService.SendPasswordResetEmail(user.Email, otpCode);
 
                 await _context.SaveChangesAsync();
 
@@ -779,7 +788,7 @@ namespace UserService.Application.Services
                 await _context.SaveChangesAsync();
 
                 // ĐÃ BỎ DÒNG GỬI EMAIL THEO YÊU CẦU
-                // await _emailService.SendTemporaryPasswordEmail(user.Email, randomPassword); 
+                await _emailService.SendTemporaryPasswordEmail(user.Email, randomPassword);
             }
             else
             {
