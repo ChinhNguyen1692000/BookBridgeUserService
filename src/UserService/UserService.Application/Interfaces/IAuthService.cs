@@ -16,7 +16,7 @@ namespace UserService.Application.Interfaces
         Task ResetPassword(string email, string otp, string newPassword, string confirmPassword);
 
         // Google Login
-        Task<AuthResponse> GoogleLogin(GoogleLoginRequest request);
+        Task<AuthResponseWithPass> GoogleLogin(GoogleLoginRequest request);
 
         // Kích hoạt tài khoản qua email
         Task<RegisterResponse> CheckEmailForRegistration(string email);

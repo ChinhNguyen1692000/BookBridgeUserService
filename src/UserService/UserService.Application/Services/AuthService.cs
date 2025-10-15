@@ -558,10 +558,112 @@ namespace UserService.Application.Services
         }
 
         // This method handles Google login by validating the Google token, checking/creating the user in the database, and generating a JWT token.
-        public async Task<AuthResponse> GoogleLogin(GoogleLoginRequest request)
+        // public async Task<AuthResponseWithPass> GoogleLogin(GoogleLoginRequest request)
+        // {
+        //     // Lấy danh sách Accepted Audiences từ cấu hình
+        //     var acceptedAudiences = _googleAuthSettings.AcceptedAudiences;
+
+        //     // Xác thực token Google
+        //     GoogleJsonWebSignature.Payload payload;
+        //     try
+        //     {
+        //         var settings = new GoogleJsonWebSignature.ValidationSettings
+        //         {
+        //             Audience = acceptedAudiences
+        //         };
+
+        //         payload = await GoogleJsonWebSignature.ValidateAsync(request.IdToken, settings);
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         throw new UnauthorizedAccessException("Invalid Google token: " + ex.Message);
+        //     }
+
+        //     // Kiểm tra user trong DB
+        //     var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == payload.Email);
+
+        //     // Nếu chưa có, tạo user mới
+        //     if (user == null)
+        //     {
+        //         // 1. Sinh mật khẩu ngẫu nhiên
+        //         var randomPassword = _passwordGenerator.GenerateRandomPassword(); // Cần có IPasswordGenerator
+        //         var hashedPassword = _passwordHasher.HashPassword(randomPassword);
+        //         user = new User
+        //         {
+        //             Id = Guid.NewGuid(),
+        //             Username = payload.Name ?? payload.Email.Split('@')[0],
+        //             Email = payload.Email,
+        //             Phone = null,
+        //             PasswordHash = hashedPassword, // Mật khẩu ngẫu nhiên
+        //             CreatedAt = DateTime.UtcNow,
+        //             IsGoogleUser = true, // Gắn cờ
+        //             IsActive = true // Kích hoạt luôn
+        //         };
+
+        //         // Thêm user mới vào DB
+        //         _context.Users.Add(user);
+
+        //         // Gán role mặc định
+        //         var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
+        //         if (defaultRole != null)
+        //         {
+        //             _context.UserRoles.Add(new UserRole
+        //             {
+        //                 UserId = user.Id,
+        //                 RoleId = defaultRole.Id
+        //             });
+        //         }
+
+        //         // Lưu thay đổi vào DB
+        //         await _context.SaveChangesAsync();
+        //         // await _emailService.SendTemporaryPasswordEmail(user.Email, randomPassword);
+        //     }
+        //     else
+        //     {
+        //         // 4️ Nếu user đã tồn tại
+        //         if (!user.IsGoogleUser)
+        //         {
+        //             // User trước đó đăng ký bằng mật khẩu
+        //             // Option 1: buộc liên kết account trước khi login bằng Google
+        //             // throw new UnauthorizedAccessException("Account exists. Please login with password or link accounts.");
+
+        //             // Option 2: cho phép login, đánh dấu account này hỗ trợ Google
+        //             user.IsGoogleUser = true;
+        //             await _context.SaveChangesAsync();
+        //         }
+
+        //         if (!user.IsActive)
+        //         {
+        //             user.IsActive = true; // kích hoạt account nếu trước đó chưa active
+        //             await _context.SaveChangesAsync();
+        //         }
+        //     }
+
+        //     // Kiểm tra xem user đã có Refresh Token nào chưa (tức là đã login từ trước và chưa logout)
+        //     var activeTokens = await _context.RefreshTokens
+        //         .Where(rt => rt.UserId == user.Id && !rt.IsRevoked && rt.Expiry > DateTime.UtcNow)
+        //         .ToListAsync();
+
+        //     if (activeTokens.Any())
+        //     {
+        //         throw new InvalidOperationException("User must logout before logging in again.");
+        //     }
+
+        //     // Sinh token của hệ thống
+        //     var roles = await GetUserRoles(user.Id);
+        //     return await _tokenGenerator.GenerateToken(user, roles);
+        // }
+
+        // This method handles Google login by validating the Google token, checking/creating the user in the database, and generating a JWT token.
+        // This method handles Google login by validating the Google token, checking/creating the user in the database, and generating a JWT token.
+        // This method handles Google login by validating the Google token, checking/creating the user in the database, and generating a JWT token.
+        public async Task<AuthResponseWithPass> GoogleLogin(GoogleLoginRequest request)
         {
             // Lấy danh sách Accepted Audiences từ cấu hình
             var acceptedAudiences = _googleAuthSettings.AcceptedAudiences;
+
+            // Khai báo biến để lưu mật khẩu tạm. Nó sẽ là null nếu user đã tồn tại.
+            string temporaryPassword = null;
 
             // Xác thực token Google
             GoogleJsonWebSignature.Payload payload;
@@ -587,6 +689,10 @@ namespace UserService.Application.Services
             {
                 // 1. Sinh mật khẩu ngẫu nhiên
                 var randomPassword = _passwordGenerator.GenerateRandomPassword(); // Cần có IPasswordGenerator
+
+                // Gán mật khẩu ngẫu nhiên vào biến cục bộ để trả về
+                temporaryPassword = randomPassword;
+
                 var hashedPassword = _passwordHasher.HashPassword(randomPassword);
                 user = new User
                 {
@@ -616,7 +722,9 @@ namespace UserService.Application.Services
 
                 // Lưu thay đổi vào DB
                 await _context.SaveChangesAsync();
-                await _emailService.SendTemporaryPasswordEmail(user.Email, randomPassword);
+
+                // ĐÃ BỎ DÒNG GỬI EMAIL THEO YÊU CẦU
+                // await _emailService.SendTemporaryPasswordEmail(user.Email, randomPassword); 
             }
             else
             {
@@ -624,10 +732,6 @@ namespace UserService.Application.Services
                 if (!user.IsGoogleUser)
                 {
                     // User trước đó đăng ký bằng mật khẩu
-                    // Option 1: buộc liên kết account trước khi login bằng Google
-                    // throw new UnauthorizedAccessException("Account exists. Please login with password or link accounts.");
-
-                    // Option 2: cho phép login, đánh dấu account này hỗ trợ Google
                     user.IsGoogleUser = true;
                     await _context.SaveChangesAsync();
                 }
@@ -639,7 +743,7 @@ namespace UserService.Application.Services
                 }
             }
 
-            // Kiểm tra xem user đã có Refresh Token nào chưa (tức là đã login từ trước và chưa logout)
+            // Kiểm tra xem user đã có Refresh Token nào chưa 
             var activeTokens = await _context.RefreshTokens
                 .Where(rt => rt.UserId == user.Id && !rt.IsRevoked && rt.Expiry > DateTime.UtcNow)
                 .ToListAsync();
@@ -649,9 +753,33 @@ namespace UserService.Application.Services
                 throw new InvalidOperationException("User must logout before logging in again.");
             }
 
-            // Sinh token của hệ thống
+            // Lấy Roles
             var roles = await GetUserRoles(user.Id);
-            return await _tokenGenerator.GenerateToken(user, roles);
+
+            // 1. Sinh token của hệ thống. Giả sử hàm này trả về AuthResponse.
+            var authResponse = await _tokenGenerator.GenerateToken(user, roles);
+
+            // 2. Tạo đối tượng AuthResponseWithPass mới và ánh xạ dữ liệu
+            var responseWithPass = new AuthResponseWithPass
+            {
+                // Sao chép các trường User
+                Id = user.Id.ToString(),
+                Username = user.Username,
+                Email = user.Email,
+
+                // Sao chép các trường Token từ AuthResponse
+                AccessToken = authResponse.AccessToken,
+                RefreshToken = authResponse.RefreshToken,
+
+                // Thêm Roles
+                Roles = roles,
+
+                // 3. Gán mật khẩu tạm (sẽ là null nếu user đã tồn tại)
+                TempPassword = temporaryPassword
+            };
+
+            // 4. Trả về đối tượng AuthResponseWithPass
+            return responseWithPass;
         }
 
         // Cập nhật username và phone number
