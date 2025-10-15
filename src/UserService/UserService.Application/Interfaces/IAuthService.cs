@@ -11,7 +11,7 @@ namespace UserService.Application.Interfaces
         Task<RegisterResponse> Register(RegisterRequest request);
         // Email login
         Task<AuthResponse> Login(LoginRequest request);
-        Task ForgetPassword(string email);
+        Task<string> ForgetPassword(string email);
         // 
         Task ResetPassword(string email, string otp, string newPassword, string confirmPassword);
 

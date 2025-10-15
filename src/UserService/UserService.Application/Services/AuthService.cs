@@ -470,23 +470,32 @@ namespace UserService.Application.Services
         }
 
         // This method initiates the password reset process by generating a reset token and sending it via email.
-        public async Task ForgetPassword(string email)
+        public async Task<string> ForgetPassword(string email)
         {
+            // 1. Kiểm tra người dùng tồn tại
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            // Nếu user == null thì ném exception để Controller bắt và trả về lỗi
             if (user == null)
-                return;
+                throw new InvalidOperationException("Email chưa được đăng ký trong hệ thống."); // 👈 Thay đổi ở đây
 
             try
             {
-                // Gửi otp vao email
+                // 2. Tạo và lưu OTP
+                // Giả định _otpService.GenerateAndStoreOtpAsync trả về string OTP
                 var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.ResetPassword);
-                await _emailService.SendPasswordResetEmail(user.Email, otpCode);
+
+                // **BỎ QUA:** Không gửi email nữa, nên loại bỏ dòng này
+                // await _emailService.SendPasswordResetEmail(user.Email, otpCode);
 
                 await _context.SaveChangesAsync();
+
+                // 3. Trả về OTP cho Controller
+                return otpCode; // 👈 Thay đổi ở đây
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Lỗi khi gửi mail quên mật khẩu cho {email}");
+                _logger.LogError(ex, $"Lỗi khi tạo OTP quên mật khẩu cho {email}");
                 throw;
             }
         }

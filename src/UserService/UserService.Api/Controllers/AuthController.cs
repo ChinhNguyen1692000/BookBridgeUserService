@@ -52,7 +52,7 @@ namespace UserService.API.Controllers
             try
             {
                 var response = await _authService.Register(request);
-                return Ok(response);
+                return Ok(new { message = "Register success. Your account has been active. Please login", response });
             }
             catch (Exception ex)
             {
@@ -197,38 +197,66 @@ namespace UserService.API.Controllers
 
         // POST: api/Auth/forget-password
         [HttpPost("forget-password")]
-        public async Task<IActionResult> ForgetPassword([FromQuery] string email) // Dùng FromQuery hoặc dùng 1 Model đơn giản
+        public async Task<IActionResult> ForgetPassword([FromQuery] string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return BadRequest(new { message = "Email không được để trống." });
+            }
+
             try
             {
-                await _authService.ForgetPassword(email);
-                // Luôn trả về 200/202 để tránh bị brute-force check email
-                return Accepted(new { message = "If the email exists, a password reset link has been sent." });
+                // 1. Gọi Service và nhận về OTP
+                var otp = await _authService.ForgetPassword(email); // Gọi phương thức đã chỉnh sửa
+
+                // 2. Trả về thông báo thành công và OTP cho frontend
+                // Frontend sẽ dùng message để biết thành công và dùng OTP để hiển thị hoặc log (nếu cần thiết cho việc debug)
+                return Ok(new
+                {
+                    message = "Email đã được đăng ký. Chuyển sang màn hình nhập OTP và mật khẩu mới.",
+                    otpCode = otp,
+                    success = true // Thêm field success để frontend dễ kiểm tra
+                });
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("chưa được đăng ký"))
+            {
+                // 3. Bắt lỗi khi email chưa đăng ký
+                return NotFound(new
+                {
+                    message = ex.Message, // "Email chưa được đăng ký trong hệ thống."
+                    success = false
+                });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = ex.Message });
+                // 4. Bắt các lỗi khác (lỗi server, lỗi tạo OTP...)
+                return StatusCode(500, new
+                {
+                    message = "Đã xảy ra lỗi hệ thống khi tạo OTP. Vui lòng thử lại sau.",
+                    details = ex.Message,
+                    success = false
+                });
             }
         }
 
         // POST: api/Auth/reset-password
         [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetRequest request) // Tận dụng LoginRequest để truyền Token và NewPassword
+        public async Task<IActionResult> ResetPassword([FromBody] ResetRequest request)
         {
-            // **LƯU Ý:** Đảm bảo LoginRequest có 2 field Token và Password/Repassword
-            if (string.IsNullOrEmpty(request.Otp) || string.IsNullOrEmpty(request.Password))
+            // ... (Code kiểm tra input và gọi service ResetPassword không đổi) ...
+            if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.Otp) || string.IsNullOrEmpty(request.Password))
             {
-                return BadRequest(new { message = "Token and New Password are required." });
+                return BadRequest(new { message = "Email, OTP và Mật khẩu mới không được để trống." });
             }
 
             try
             {
-                // Giả định bạn đã chỉnh sửa LoginRequest để chấp nhận Token và NewPassword
                 await _authService.ResetPassword(request.Email, request.Otp, request.Password, request.Repassword);
-                return Ok(new { message = "Password has been reset successfully." });
+                return Ok(new { message = "Mật khẩu đã được đặt lại thành công." });
             }
             catch (Exception ex)
             {
+                // Bắt lỗi như OTP không hợp lệ, email không tồn tại, mật khẩu không khớp, ...
                 return BadRequest(new { message = ex.Message });
             }
         }
