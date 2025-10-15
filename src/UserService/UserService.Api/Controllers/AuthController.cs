@@ -36,7 +36,7 @@ namespace UserService.API.Controllers
 
         // GET: api/Auth/{id}
         [Authorize(Roles = "Admin")]
-        [HttpGet("getById/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
             var user = await _authService.GetByIdAsync(id);
@@ -45,7 +45,7 @@ namespace UserService.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpDelete("deleteById/{id}")]
+        [HttpDelete("deleteById{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             // Kiểm tra ràng buộc 1: Người dùng KHÔNG được tự xóa tài khoản của chính mình (nếu dùng chung endpoint)
