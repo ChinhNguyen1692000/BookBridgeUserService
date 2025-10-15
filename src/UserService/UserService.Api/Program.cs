@@ -10,6 +10,7 @@ using UserService.Domain.Entities;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using StackExchange.Redis;
+using System.Text.Json.Serialization;
 
 // using MassTransit;
 
@@ -92,7 +93,14 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
-builder.Services.AddControllers();
+// builder.Services.AddControllers();
+// Thêm cấu hình JSON để tránh vòng lặp
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
