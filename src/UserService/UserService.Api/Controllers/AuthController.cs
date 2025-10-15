@@ -44,6 +44,45 @@ namespace UserService.API.Controllers
             return Ok(user);
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+            // Kiểm tra ràng buộc 1: Người dùng KHÔNG được tự xóa tài khoản của chính mình (nếu dùng chung endpoint)
+            // Lấy userId từ token của người đang yêu cầu
+            var currentUserIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!string.IsNullOrEmpty(currentUserIdClaim) && Guid.TryParse(currentUserIdClaim, out var currentUserId) && currentUserId == id)
+            {
+                // Trả về 403 Forbidden hoặc 400 BadRequest để cấm người dùng tự xóa mình
+                return StatusCode(403, new { message = "Admin không được tự xóa tài khoản của chính mình thông qua API này." });
+
+            }
+
+            try
+            {
+                // Xử lý logic xóa (bao gồm cả ràng buộc, kiểm tra quyền và NotFound) sẽ nằm trong service.
+                var message = await _authService.DeleteUserAsync(id);
+
+                // Nếu service trả về thành công
+                return Ok(new { message = message ?? $"Người dùng với ID '{id}' đã được xóa thành công." });
+            }
+            catch (Application.CustomExceptions.NotFoundException ex)
+            {
+                // Bắt lỗi khi không tìm thấy người dùng
+                return NotFound(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Bắt lỗi về ràng buộc: Ví dụ: "Không thể xóa người dùng vì có đơn hàng/bài đăng liên quan."
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Bắt lỗi server chung (500)
+                return StatusCode(500, new { message = "Lỗi hệ thống khi xóa người dùng: " + ex.Message });
+            }
+        }
+
         // POST: api/Auth/register
         // Bước 2: Đăng ký đầy đủ, kèm OTP. Kiểm tra OTP, lưu user, kích hoạt tài khoản, vô hiệu hóa OTP.
         [HttpPost("register")]

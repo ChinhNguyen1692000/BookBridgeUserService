@@ -43,17 +43,81 @@ namespace UserService.Application.Services
             _logger = logger;
         }
 
-        // Get all users with pagination
         public async Task<PagedResult<User>> GetAllAsync(int pageNo, int pageSize)
         {
-            var users = await _context.Users.ToListAsync();
-            return PagedResult<User>.Create(users, pageNo, pageSize);
+            // 1. Lấy TỔNG SỐ LƯỢNG bản ghi (Dùng CountAsync() để chỉ đếm, không tải dữ liệu)
+            var totalRecords = await _context.Users.CountAsync();
+
+            // 2. PHÂN TRANG: Áp dụng Skip và Take trên database (IQueryable)
+            var usersQuery = _context.Users
+                // Thêm Include() nếu bạn cần tải Roles cùng lúc (Eager Loading)
+                // .Include(u => u.UserRoles) 
+                .Skip((pageNo - 1) * pageSize)
+                .Take(pageSize);
+
+            var users = await usersQuery.ToListAsync(); // Chỉ tải các bản ghi của trang hiện tại
+
+            // 3. Xử lý dữ liệu sau khi truy vấn
+            foreach (var user in users)
+            {
+                // Ẩn mật khẩu
+                user.PasswordHash = "**********";
+
+                // **LƯU Ý QUAN TRỌNG:**
+                // Nếu bạn muốn tải Roles, hãy dùng .Include() ở trên.
+                // Bỏ qua dòng lỗi cũ: t.UserRoles = _context.UserRoles.FirstAsync(t.Id);
+            }
+
+            // 4. Trả về kết quả phân trang bằng hàm Create MỚI
+            // Cung cấp 4 tham số: users, pageNo, pageSize, totalRecords
+            return PagedResult<User>.Create(users, pageNo, pageSize, totalRecords);
         }
 
-        // Get user by ID
+        // Get user by ID// Get user by ID
         public async Task<User> GetByIdAsync(Guid userId)
         {
-            return await _context.Users.FindAsync(userId);
+            // Tải người dùng và các Roles liên quan (Eager Loading)
+            // Dùng SingleOrDefaultAsync hoặc FirstOrDefaultAsync để đảm bảo truy vấn được thực thi
+            // FindAsync chỉ tốt khi truy vấn theo khóa chính ĐƠN, và không hỗ trợ Include.
+            var user = await _context.Users
+                .Include(u => u.UserRoles) // Tải Collection UserRoles
+                                           // .ThenInclude(ur => ur.Role) // Bỏ comment nếu muốn tải thêm thông tin Role chi tiết
+                .SingleOrDefaultAsync(u => u.Id == userId);
+
+            // Kiểm tra xem người dùng có tồn tại không
+            if (user == null)
+            {
+                return null; // Hoặc ném ngoại lệ NotFound tùy theo logic ứng dụng
+            }
+
+            // 2. Ẩn mật khẩu (nên dùng DTO thay vì sửa đổi Model trực tiếp)
+            user.PasswordHash = "**********";
+
+            // 3. Loại bỏ đoạn mã lỗi:
+            // User.UserRoles = (ICollection<UserRole>)await _context.UserRoles.FindAsync(userId);
+            // Vấn đề này đã được giải quyết bằng .Include() ở bước 1.
+
+            return user;
+        }
+
+        public async Task<string> DeleteUserAsync(Guid userId)
+        {
+            var userToDelete = await _context.Users
+                .SingleOrDefaultAsync(u => u.Id == userId);
+
+            if (userToDelete == null)
+            {
+                // Giả định NotFoundException đã được định nghĩa
+                throw new NotFoundException($"Người dùng với ID '{userId}' không tồn tại.");
+            }
+
+            // **KHÔNG CẦN** xóa thủ công UserRoles, RefreshTokens, UserOTPs.
+            // Entity Framework Core/Database sẽ tự làm việc này nhờ OnDelete(DeleteBehavior.Cascade).
+
+            _context.Users.Remove(userToDelete);
+            await _context.SaveChangesAsync(); // Việc xóa tầng xảy ra tại đây.
+
+            return $"Người dùng '{userToDelete.Email}' và tất cả dữ liệu liên quan đã được xóa thành công.";
         }
 
         // public async Task<RegisterResponse> Register(RegisterRequest request)

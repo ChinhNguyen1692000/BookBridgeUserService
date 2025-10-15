@@ -14,26 +14,23 @@ namespace Common.Paging
 
         private PagedResult() { }
 
-        // Factory method
-        public static PagedResult<T> Create(IEnumerable<T> source, int page, int perPage)
+        // Factory method CŨ: Dùng cho Memory Paging (không nên dùng với DB Paging)
+        // public static PagedResult<T> Create(IEnumerable<T> source, int page, int perPage) { ... }
+
+
+        // **Factory method MỚI: Dùng cho Database Paging (Phân trang hiệu quả)**
+        public static PagedResult<T> Create(List<T> items, int page, int perPage, int totalCount)
         {
             if (page <= 0) page = 1;
             if (perPage <= 0) perPage = 10;
-
-            var totalCount = source is ICollection<T> collection
-                ? collection.Count
-                : new List<T>(source).Count;
-
-            var skip = (page - 1) * perPage;
-            var items = new List<T>(source).GetRange(
-                skip, Math.Min(perPage, Math.Max(0, totalCount - skip))
-            );
+            if (totalCount < 0) totalCount = 0;
 
             var hasMore = page * perPage < totalCount;
 
             return new PagedResult<T>
             {
-                Items = items,
+                // Items đã được Skip() và Take() trên database, nên chỉ cần gán vào
+                Items = items ?? new List<T>(),
                 Page = page,
                 PerPage = perPage,
                 TotalCount = totalCount,

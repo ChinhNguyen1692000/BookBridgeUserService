@@ -51,11 +51,13 @@ namespace UserService.Infrastructure.Data
 
                 entity.HasOne(ur => ur.User)
                       .WithMany(u => u.UserRoles)
-                      .HasForeignKey(ur => ur.UserId);
+                      .HasForeignKey(ur => ur.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasOne(ur => ur.Role)
                       .WithMany(r => r.UserRoles)
-                      .HasForeignKey(ur => ur.RoleId);
+                      .HasForeignKey(ur => ur.RoleId)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
 
             // UserOtp
