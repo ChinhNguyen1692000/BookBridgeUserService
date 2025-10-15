@@ -666,11 +666,11 @@ namespace UserService.Application.Services
             if (!string.IsNullOrWhiteSpace(request.Phone) && request.Phone.Length > 20)
                 throw new ArgumentException("Phone quá dài.");
 
-            // Check trùng username (không tính chính user)
-            var usernameExists = await _context.Users
-                .AnyAsync(u => u.Username == request.Username && u.Id != userId);
-            if (usernameExists)
-                throw new ArgumentException("Username đã tồn tại.");
+            // // Check trùng username (không tính chính user)
+            // var usernameExists = await _context.Users
+            //     .AnyAsync(u => u.Username == request.Username && u.Id != userId);
+            // if (usernameExists)
+            //     throw new ArgumentException("Username đã tồn tại.");
 
             // Check trùng phone (không tính chính user)
             if (!string.IsNullOrWhiteSpace(request.Phone))
