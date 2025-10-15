@@ -385,7 +385,7 @@ namespace UserService.Application.Services
                 };
                 _context.Users.Add(tempUser);
 
-                var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "User");
+                var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
                 if (defaultRole == null)
                     throw new InvalidOperationException("Default role 'User' not found.");
 
