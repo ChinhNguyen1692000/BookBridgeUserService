@@ -45,7 +45,7 @@ namespace UserService.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteById/{id}")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             // Kiểm tra ràng buộc 1: Người dùng KHÔNG được tự xóa tài khoản của chính mình (nếu dùng chung endpoint)
