@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using StackExchange.Redis;
 using System.Text.Json.Serialization;
+using Microsoft.OpenApi.Models;
 
 // using MassTransit;
 
@@ -103,7 +104,40 @@ builder.Services.AddControllers()
     });
 builder.Services.AddHttpClient();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+// Send access token in header for swagger
+// builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API Name", Version = "v1" });
+
+    // 1. Định nghĩa Security Scheme (Security Definition)
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Vui lòng nhập Bearer Token vào trường text bên dưới. Ví dụ: 'Bearer {token}'",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer" // Phải là "Bearer"
+    });
+
+    // 2. Yêu cầu Security (Security Requirement)
+    // Áp dụng định nghĩa "Bearer" cho tất cả các endpoint (hoặc chỉ những cái cần)
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer" // Tham chiếu đến tên của Security Scheme ở trên
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 
 // 4. Redis
