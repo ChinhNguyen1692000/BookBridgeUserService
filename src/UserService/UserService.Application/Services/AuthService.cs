@@ -470,7 +470,6 @@ namespace UserService.Application.Services
                 Username = tempUser.Username,
                 Email = tempUser.Email,
                 Roles = roles,
-                OtpCode = otpCode
             };
 
             // _logger.LogWarning("Registration OTP for {Email}: {OtpCode}", email, otpCode);

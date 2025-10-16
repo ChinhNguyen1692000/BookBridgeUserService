@@ -259,7 +259,6 @@ namespace UserService.API.Controllers
                 return Ok(new
                 {
                     message = "Email đã được đăng ký. Chuyển sang màn hình nhập OTP và mật khẩu mới.",
-                    otpCode = otp,
                     success = true // Thêm field success để frontend dễ kiểm tra
                 });
             }
