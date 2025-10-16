@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("UserService.Messaging")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+92295ceb192187caab5b5db510f29bfb1f561e47")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f9ac6f339bfd5bd5d5a7ed9fb1337530dfad2182")]
 [assembly: System.Reflection.AssemblyProductAttribute("UserService.Messaging")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UserService.Messaging")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

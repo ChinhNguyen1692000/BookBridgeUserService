@@ -283,9 +283,9 @@ namespace UserService.Application.Services
 
                     // _logger.LogInformation("Account registered and activated successfully for {Email}.", user.Email);
                     // 3. Tạo OTP mới
-                    var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.Activation);
-                    // Gửi OTP kích hoạt
-                    await _emailService.SendActivationOtpEmail(user.Email, otpCode);
+                    // var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.Activation);
+                    // // Gửi OTP kích hoạt
+                    // await _emailService.SendActivationOtpEmail(user.Email, otpCode);
 
 
                     // 10. Chuẩn bị Response
@@ -520,10 +520,10 @@ namespace UserService.Application.Services
                 .Where(rt => rt.UserId == user.Id && !rt.IsRevoked && rt.Expiry > DateTime.UtcNow)
                 .ToListAsync();
 
-            if (activeTokens.Any())
-            {
-                throw new InvalidOperationException("User must logout before logging in again.");
-            }
+            // if (activeTokens.Any())
+            // {
+            //     throw new InvalidOperationException("User must logout before logging in again.");
+            // }
 
 
             // Tạo và lưu Refresh Token mới, trả về AccessToken/RefreshToken
@@ -812,10 +812,10 @@ namespace UserService.Application.Services
                 .Where(rt => rt.UserId == user.Id && !rt.IsRevoked && rt.Expiry > DateTime.UtcNow)
                 .ToListAsync();
 
-            if (activeTokens.Any())
-            {
-                throw new InvalidOperationException("User must logout before logging in again.");
-            }
+            // if (activeTokens.Any())
+            // {
+            //     throw new InvalidOperationException("User must logout before logging in again.");
+            // }
 
             // Lấy Roles
             var roles = await GetUserRoles(user.Id);
