@@ -31,7 +31,7 @@ namespace UserService.API.Controllers
             return Ok(checkMail);
         }
         // GET: api/Auth
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpGet("getAll")]
         public async Task<IActionResult> GetAllUser([FromQuery] int pageNo, [FromQuery] int pageSize)
         {
@@ -41,7 +41,7 @@ namespace UserService.API.Controllers
 
 
         // GET: api/Auth/{id}
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpGet("getById")]
         public async Task<IActionResult> GetUserById([FromQuery] Guid id)
         {
