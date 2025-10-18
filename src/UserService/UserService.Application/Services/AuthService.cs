@@ -731,8 +731,10 @@ namespace UserService.Application.Services
         }
 
         // Cập nhật username và phone number
+        // Cập nhật username và phone number
         public async Task<UpdateUserInforResponse> UpdateUserNameAndPhoneNumberAsync(UpdateUserRequest request, Guid userId)
         {
+            // --- 1. Validation ---
             if (string.IsNullOrWhiteSpace(request.Username))
                 throw new ArgumentException("Username không được để trống.");
 
@@ -742,13 +744,7 @@ namespace UserService.Application.Services
             if (!string.IsNullOrWhiteSpace(request.Phone) && request.Phone.Length > 20)
                 throw new ArgumentException("Phone quá dài.");
 
-            // // Check trùng username (không tính chính user)
-            // var usernameExists = await _context.Users
-            //     .AnyAsync(u => u.Username == request.Username && u.Id != userId);
-            // if (usernameExists)
-            //     throw new ArgumentException("Username đã tồn tại.");
-
-            // Check trùng phone (không tính chính user)
+            // (Giữ lại logic check trùng phone như code gốc của bạn)
             if (!string.IsNullOrWhiteSpace(request.Phone))
             {
                 var phoneExists = await _context.Users
@@ -757,22 +753,42 @@ namespace UserService.Application.Services
                     throw new ArgumentException("Phone đã tồn tại.");
             }
 
-            // Lấy user hiện tại
+            // --- 2. Lấy User ---
             var user = await _context.Users.FindAsync(userId);
             if (user == null)
                 throw new Exception("User không tồn tại");
 
+            // --- 3. GÁN GIÁ TRỊ MỚI (PHẦN BỊ THIẾU/LỖI) ---
+            // Gán giá trị Username mới
+            user.Username = request.Username;
 
-            // prepare response
+            // Gán giá trị Phone mới (chỉ khi có giá trị)
+            if (!string.IsNullOrWhiteSpace(request.Phone))
+            {
+                user.Phone = request.Phone;
+            }
+            else
+            {
+                // Tùy theo logic nghiệp vụ, nếu request.Phone rỗng, bạn có thể gán null hoặc giữ giá trị cũ.
+                // Giả sử logic là cho phép xóa số điện thoại nếu gửi lên rỗng
+                user.Phone = null;
+            }
+
+            // --- 4. LƯU THAY ĐỔI VÀO DATABASE ---
+            // Entity Framework Core sẽ tự động phát hiện các thay đổi (user.Username, user.Phone) 
+            // và tạo câu lệnh UPDATE khi gọi SaveChangesAsync()
+            await _context.SaveChangesAsync();
+
+            // --- 5. Prepare Response (Lấy giá trị ĐÃ CẬP NHẬT từ đối tượng 'user') ---
             UpdateUserInforResponse updateUserInforResponse = new UpdateUserInforResponse();
             updateUserInforResponse.Id = user.Id;
-            updateUserInforResponse.Username = request.Username;
+            updateUserInforResponse.Username = user.Username; // Lấy từ user (giá trị mới)
             updateUserInforResponse.Email = user.Email;
-            
+
             // phone
             if (!string.IsNullOrWhiteSpace(user.Phone))
             {
-                updateUserInforResponse.Phone = user.Phone;
+                updateUserInforResponse.Phone = user.Phone; // Lấy từ user (giá trị mới)
             }
             else
             {
@@ -782,8 +798,6 @@ namespace UserService.Application.Services
             // roles
             var roles = await GetUserRoles(user.Id);
             updateUserInforResponse.Roles = roles;
-
-            await _context.SaveChangesAsync();
 
             return updateUserInforResponse;
         }
