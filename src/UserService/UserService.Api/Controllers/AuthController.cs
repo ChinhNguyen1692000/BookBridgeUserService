@@ -197,10 +197,12 @@ namespace UserService.API.Controllers
                 return Unauthorized(new { message = "User is not authenticated." });
             }
 
+            UpdateUserInforResponse updateUserInforResponse = new UpdateUserInforResponse();
+
             try
             {
-                var message = await _authService.UpdateUserNameAndPhoneNumberAsync(request, userId);
-                return Ok(new { message });
+                updateUserInforResponse = await _authService.UpdateUserNameAndPhoneNumberAsync(request, userId);
+                return Ok(updateUserInforResponse);
             }
             catch (ArgumentException ex)
             {

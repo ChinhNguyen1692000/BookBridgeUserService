@@ -20,9 +20,6 @@ namespace UserService.Application.Interfaces
 
         // Kích hoạt tài khoản qua email
         Task<RegisterResponse> CheckEmailForRegistration(string email);
-        // Task<(bool Success, string Message)> ActiveEmailAccount(string otp, string email);
-
-
 
         // Lấy thông tin người dùng bằng ID
         Task<User> GetByIdAsync(Guid userId);
@@ -31,7 +28,7 @@ namespace UserService.Application.Interfaces
         Task<PagedResult<User>> GetAllAsync(int pageNo, int pageSize);
 
         // Cập nhật username và phone number
-        Task<string> UpdateUserNameAndPhoneNumberAsync(UpdateUserRequest request, Guid userId);
+        Task<UpdateUserInforResponse> UpdateUserNameAndPhoneNumberAsync(UpdateUserRequest request, Guid userId);
 
         // Cập nhật mật khẩu người dùng
         Task<string> UpdateUserPasswordAsync(UpdateUserPasswordRequest request, Guid userId);

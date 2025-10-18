@@ -63,10 +63,6 @@ namespace UserService.Application.Services
             {
                 // Ẩn mật khẩu
                 user.PasswordHash = "**********";
-
-                // **LƯU Ý QUAN TRỌNG:**
-                // Nếu bạn muốn tải Roles, hãy dùng .Include() ở trên.
-                // Bỏ qua dòng lỗi cũ: t.UserRoles = _context.UserRoles.FirstAsync(t.Id);
             }
 
             // 4. Trả về kết quả phân trang bằng hàm Create MỚI
@@ -74,7 +70,7 @@ namespace UserService.Application.Services
             return PagedResult<User>.Create(users, pageNo, pageSize, totalRecords);
         }
 
-        // Get user by ID// Get user by ID
+        // Get user by ID/ Get user by ID
         public async Task<User> GetByIdAsync(Guid userId)
         {
 
@@ -110,99 +106,6 @@ namespace UserService.Application.Services
 
             return $"Người dùng '{userToDelete.Email}' và tất cả dữ liệu liên quan đã được xóa thành công.";
         }
-
-        // public async Task<RegisterResponse> Register(RegisterRequest request)
-        // {
-        //     // 1. Validation cơ bản
-        //     if (request.Password != request.Repassword)
-        //         throw new ArgumentException("Passwords do not match.");
-
-        //     // 2. Kiểm tra trùng lặp
-        //     if (await _context.Users.AnyAsync(u => u.Email == request.Email))
-        //         throw new InvalidOperationException("Email address already exists.");
-
-        //     if (await _context.Users.AnyAsync(u => u.Phone == request.Phone))
-        //         throw new InvalidOperationException("Phone number already exists.");
-
-        //     var passwordHash = _passwordHasher.HashPassword(request.Password);
-
-        //     // Khai báo ngoài scope để có thể dùng trong khối ExecuteAsync và trả về
-        //     User user = null;
-        //     RegisterResponse registerResponse = null;
-
-        //     // **SỬ DỤNG EXECUTION STRATEGY ĐỂ TRÁNH LỖI INVALIDOPERATIONEXCEPTION**
-        //     var strategy = _context.Database.CreateExecutionStrategy();
-
-        //     await strategy.ExecuteAsync(async () =>
-        //     {
-        //         // BẮT ĐẦU TRANSACTION
-        //         using var transaction = await _context.Database.BeginTransactionAsync();
-
-        //         try
-        //         {
-        //             // 3. Chuẩn bị dữ liệu User và Role
-        //             user = new User
-        //             {
-        //                 Id = Guid.NewGuid(),
-        //                 Username = request.Username,
-        //                 Email = request.Email,
-        //                 Phone = request.Phone,
-        //                 PasswordHash = passwordHash,
-        //                 CreatedAt = DateTime.UtcNow
-        //             };
-
-        //             _context.Users.Add(user);
-
-        //             var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
-        //             if (defaultRole == null)
-        //                 throw new InvalidOperationException("Default role 'Buyer' not found.");
-
-        //             _context.UserRoles.Add(new UserRole
-        //             {
-        //                 UserId = user.Id,
-        //                 RoleId = defaultRole.Id
-        //             });
-
-        //             // 4. Lưu thay đổi vào DB (trong Transaction)
-        //             await _context.SaveChangesAsync();
-        //             _logger.LogInformation("User and Role saved successfully for {Email}.", user.Email);
-
-        //             // 5. Tạo OTP và Gửi Email kích hoạt
-        //             var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.Activation);
-
-        //             // Lệnh này sẽ throw exception nếu gửi mail thất bại, 
-        //             // dẫn đến rollback ở khối catch.
-        //             await _emailService.SendActivationOtpEmail(user.Email, otpCode);
-
-        //             // 6. COMMIT TRANSACTION chỉ khi DB và Gửi Mail đều thành công
-        //             await transaction.CommitAsync();
-        //             _logger.LogInformation("Transaction committed successfully for {Email}.", user.Email);
-
-        //             // 7. Chuẩn bị Response
-        //             var roles = await GetUserRoles(user.Id); // Giả định có phương thức này
-        //             registerResponse = new RegisterResponse
-        //             {
-        //                 Id = user.Id.ToString(),
-        //                 Username = user.Username,
-        //                 Email = user.Email,
-        //                 Roles = roles
-        //             };
-        //         }
-        //         catch (Exception ex)
-        //         {
-        //             // 8. ROLLBACK TRANSACTION nếu có lỗi DB, OTP hoặc lỗi Gửi Mail
-        //             await transaction.RollbackAsync();
-
-        //             // Log lỗi chi tiết
-        //             _logger.LogError(ex, "Registration failed for user {Email}. Transaction rolled back.", request.Email);
-
-        //             // **BẮT BUỘC** re-throw (ném lại) lỗi để Execution Strategy biết rằng thao tác thất bại.
-        //             throw;
-        //         }
-        //     });
-
-        //     return registerResponse;
-        // }
 
 
         public async Task<RegisterResponse> Register(RegisterRequest request)
@@ -266,27 +169,9 @@ namespace UserService.Application.Services
                     userOtp.IsUsed = true;
                     _context.UserOtps.Update(userOtp);
 
-                    // // 8. Gán Role mặc định
-                    // var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Buyer");
-                    // if (defaultRole == null)
-                    //     throw new InvalidOperationException("Default role 'Buyer' not found.");
-
-                    // _context.UserRoles.Add(new UserRole
-                    // {
-                    //     UserId = user.Id,
-                    //     RoleId = defaultRole.Id
-                    // });
-
                     // 9. Lưu thay đổi và Commit Transaction
                     await _context.SaveChangesAsync();
                     await transaction.CommitAsync();
-
-                    // _logger.LogInformation("Account registered and activated successfully for {Email}.", user.Email);
-                    // 3. Tạo OTP mới
-                    // var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.Activation);
-                    // // Gửi OTP kích hoạt
-                    // await _emailService.SendActivationOtpEmail(user.Email, otpCode);
-
 
                     // 10. Chuẩn bị Response
                     var roles = await GetUserRoles(user.Id); // Giả định có phương thức này
@@ -846,7 +731,7 @@ namespace UserService.Application.Services
         }
 
         // Cập nhật username và phone number
-        public async Task<string> UpdateUserNameAndPhoneNumberAsync(UpdateUserRequest request, Guid userId)
+        public async Task<UpdateUserInforResponse> UpdateUserNameAndPhoneNumberAsync(UpdateUserRequest request, Guid userId)
         {
             if (string.IsNullOrWhiteSpace(request.Username))
                 throw new ArgumentException("Username không được để trống.");
@@ -877,12 +762,30 @@ namespace UserService.Application.Services
             if (user == null)
                 throw new Exception("User không tồn tại");
 
-            user.Username = request.Username;
-            user.Phone = request.Phone;
+
+            // prepare response
+            UpdateUserInforResponse updateUserInforResponse = new UpdateUserInforResponse();
+            updateUserInforResponse.Id = user.Id;
+            updateUserInforResponse.Username = request.Username;
+            updateUserInforResponse.Email = user.Email;
+            
+            // phone
+            if (!string.IsNullOrWhiteSpace(user.Phone))
+            {
+                updateUserInforResponse.Phone = user.Phone;
+            }
+            else
+            {
+                updateUserInforResponse.Phone = "";
+            }
+
+            // roles
+            var roles = await GetUserRoles(user.Id);
+            updateUserInforResponse.Roles = roles;
 
             await _context.SaveChangesAsync();
 
-            return "User info updated successfully.";
+            return updateUserInforResponse;
         }
 
 
