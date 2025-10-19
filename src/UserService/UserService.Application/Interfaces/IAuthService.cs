@@ -22,7 +22,7 @@ namespace UserService.Application.Interfaces
         Task<RegisterResponse> CheckEmailForRegistration(string email);
 
         // Lấy thông tin người dùng bằng ID
-        Task<User> GetByIdAsync(Guid userId);
+        Task<GetUserByIdResponse> GetByIdAsync(Guid userId);
 
         // Lấy tất cả người dùng với phân trang
         Task<PagedResult<User>> GetAllAsync(int pageNo, int pageSize);

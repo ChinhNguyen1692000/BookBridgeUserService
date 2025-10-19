@@ -71,20 +71,41 @@ namespace UserService.Application.Services
         }
 
         // Get user by ID/ Get user by ID
-        public async Task<User> GetByIdAsync(Guid userId)
+        public async Task<GetUserByIdResponse> GetByIdAsync(Guid userId)
         {
-
             var user = await _context.Users
                 .Include(u => u.UserRoles)
+                    .ThenInclude(ur => ur.Role)
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
-            // Kiểm tra xem người dùng có tồn tại không
-            if (user == null)
-            {
-                return null;
-            }
+            if (user == null) return null;
+
+            // Ẩn mật khẩu
             user.PasswordHash = "**********";
-            return user;
+
+            // Map sang DTO
+            var response = new GetUserByIdResponse
+            {
+                Id = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Phone = user.Phone,
+                PasswordHash = user.PasswordHash,
+                CreatedAt = user.CreatedAt,
+                IsGoogleUser = user.IsGoogleUser,
+                IsActive = user.IsActive,
+                UserOtps = user.UserOtps,
+                RefreshTokens = user.RefreshTokens,
+                Roles = user.UserRoles
+                            .Select(ur => new UserRoleDto
+                            {
+                                RoleId = ur.RoleId,
+                                RoleName = ur.Role.RoleName
+                            })
+                            .ToList()
+            };
+
+            return response;
         }
 
         public async Task<string> DeleteUserAsync(Guid userId)
