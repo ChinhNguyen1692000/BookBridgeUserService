@@ -43,3 +43,18 @@ E:\check-merge\bookbridge-backend\src\Services\Common\obj\Debug\net8.0\refint\Co
 E:\check-merge\bookbridge-backend\src\Services\Common\obj\Debug\net8.0\Common.pdb
 E:\check-merge\bookbridge-backend\src\Services\Common\obj\Debug\net8.0\Common.genruntimeconfig.cache
 E:\check-merge\bookbridge-backend\src\Services\Common\obj\Debug\net8.0\ref\Common.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\bin\Debug\net8.0\Common.deps.json
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\bin\Debug\net8.0\Common.runtimeconfig.json
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\bin\Debug\net8.0\Common.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\bin\Debug\net8.0\Common.pdb
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\obj\Debug\net8.0\Common.csproj.AssemblyReference.cache
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\obj\Debug\net8.0\Common.GeneratedMSBuildEditorConfig.editorconfig
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\obj\Debug\net8.0\Common.AssemblyInfoInputs.cache
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\obj\Debug\net8.0\Common.AssemblyInfo.cs
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\obj\Debug\net8.0\Common.csproj.CoreCompileInputs.cache
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\obj\Debug\net8.0\Common.sourcelink.json
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\obj\Debug\net8.0\Common.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\obj\Debug\net8.0\refint\Common.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\obj\Debug\net8.0\Common.pdb
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\obj\Debug\net8.0\Common.genruntimeconfig.cache
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\Common\obj\Debug\net8.0\ref\Common.dll

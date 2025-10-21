@@ -106,7 +106,6 @@ builder.Services.AddHttpClient();
 builder.Services.AddEndpointsApiExplorer();
 
 // Send access token in header for swagger
-// builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API Name", Version = "v1" });
@@ -122,7 +121,6 @@ builder.Services.AddSwaggerGen(c =>
     });
 
     // 2. Yêu cầu Security (Security Requirement)
-    // Áp dụng định nghĩa "Bearer" cho tất cả các endpoint (hoặc chỉ những cái cần)
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
@@ -141,9 +139,6 @@ builder.Services.AddSwaggerGen(c =>
 
 
 // 4. Redis
-// var redisConnection = configuration.GetConnectionString("Redis");
-// builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnection));
-// builder.Services.AddScoped<ICacheService, RedisCacheService>();
 var redisConnection = builder.Configuration.GetConnectionString("Redis") ?? Environment.GetEnvironmentVariable("ConnectionStrings__Redis");
 
 if (redisConnection.StartsWith("redis://"))
@@ -165,7 +160,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 });
 
 
-// 5. MassTransit (Nếu dùng sau này)
+// 5. MassTransit
 // builder.Services.AddMassTransit(...)
 
 // 6. Configure Kestrel to use Render's provided PORT
