@@ -10,7 +10,7 @@ namespace UserService.Infrastructure.Data
             var optionsBuilder = new DbContextOptionsBuilder<UserDbContext>();
 
             // ⚠️ Dùng cấu hình PostgreSQL đúng của bạn — KHÔNG lấy từ Docker vì EF chạy ngoài container
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=12345;");
+            optionsBuilder.UseNpgsql("User Id=postgres.hhmcmpnmytivfgsvbwpo;Password=0328802216Zz.;Server=aws-1-us-east-2.pooler.supabase.com;Port=5432;Database=postgres");
 
             return new UserDbContext(optionsBuilder.Options);
         }

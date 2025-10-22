@@ -10,3 +10,15 @@ E:\check-merge\bookbridge-backend\UserService.Messaging\obj\Debug\net8.0\UserSer
 E:\check-merge\bookbridge-backend\UserService.Messaging\obj\Debug\net8.0\refint\UserService.Messaging.dll
 E:\check-merge\bookbridge-backend\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.pdb
 E:\check-merge\bookbridge-backend\UserService.Messaging\obj\Debug\net8.0\ref\UserService.Messaging.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Messaging\bin\Debug\net8.0\UserService.Messaging.deps.json
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Messaging\bin\Debug\net8.0\UserService.Messaging.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Messaging\bin\Debug\net8.0\UserService.Messaging.pdb
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.GeneratedMSBuildEditorConfig.editorconfig
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.AssemblyInfoInputs.cache
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.AssemblyInfo.cs
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.csproj.CoreCompileInputs.cache
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.sourcelink.json
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Messaging\obj\Debug\net8.0\refint\UserService.Messaging.dll
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Messaging\obj\Debug\net8.0\UserService.Messaging.pdb
+E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Messaging\obj\Debug\net8.0\ref\UserService.Messaging.dll
