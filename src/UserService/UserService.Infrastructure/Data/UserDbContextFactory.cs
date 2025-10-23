@@ -14,7 +14,7 @@ namespace UserService.Infrastructure.Data
                 .Build();
 
             var optionsBuilder = new DbContextOptionsBuilder<UserDbContext>();
-            var connectionString = configuration.GetConnectionString("BookServiceConnection"); // đổi theo tên connection string
+            var connectionString = configuration.GetConnectionString("UserServiceConnection"); // đổi theo tên connection string
             optionsBuilder.UseNpgsql(connectionString); // dùng PostgreSQL
 
             return new UserDbContext(optionsBuilder.Options);
