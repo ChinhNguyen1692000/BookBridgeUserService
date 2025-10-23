@@ -7,7 +7,7 @@ services:
       dockerfile: src/UserService/UserService.Api/Dockerfile
     container_name: userservice
     environment:
-      ConnectionStrings__UserServiceConnection: User Id=postgres.hhmcmpnmytivfgsvbwpo;Password=0328802216Zz.;Server=aws-1-us-east-2.pooler.supabase.com;Port=5432;Database=postgres;SslMode=Require;
+      ConnectionStrings__UserServiceConnection: User Id=postgres.hhmcmpnmytivfgsvbwpo;Password=0328802216Zz.;Server=aws-1-us-east-2.pooler.supabase.com;Port=5432;Database=postgres;SslMode=Require;Timeout=30;
       Jwt__Key: BookbridgeJWTKey_2025_Secure_ABC123!
       ASPNETCORE_ENVIRONMENT: Development
     ports:

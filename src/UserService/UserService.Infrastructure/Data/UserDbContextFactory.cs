@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
 namespace UserService.Infrastructure.Data
 {
@@ -7,10 +8,14 @@ namespace UserService.Infrastructure.Data
     {
         public UserDbContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<UserDbContext>();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
 
-            // ⚠️ Dùng cấu hình PostgreSQL đúng của bạn — KHÔNG lấy từ Docker vì EF chạy ngoài container
-            optionsBuilder.UseNpgsql("User Id=postgres.hhmcmpnmytivfgsvbwpo;Password=0328802216Zz.;Server=aws-1-us-east-2.pooler.supabase.com;Port=5432;Database=postgres");
+            var optionsBuilder = new DbContextOptionsBuilder<UserDbContext>();
+            var connectionString = configuration.GetConnectionString("BookServiceConnection"); // đổi theo tên connection string
+            optionsBuilder.UseNpgsql(connectionString); // dùng PostgreSQL
 
             return new UserDbContext(optionsBuilder.Options);
         }
