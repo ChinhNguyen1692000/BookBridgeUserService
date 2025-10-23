@@ -152,33 +152,11 @@ if (string.IsNullOrEmpty(redisConnection))
     throw new InvalidOperationException("Redis connection string is missing.");
 }
 
-// builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
-// {
-//     return ConnectionMultiplexer.Connect(redisConnection);
-// });
-
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
-    if (string.IsNullOrEmpty(redisConnection))
-    {
-        // ❌ Không nên throw ở đây, để ứng dụng chạy tiếp và service cache sẽ lỗi khi gọi
-        Console.WriteLine("❌ Redis connection string is missing. Using null connection.");
-        return null!; // Trả về null hoặc một dummy object nếu IConnectionMultiplexer cho phép
-    }
-
-    try
-    {
-        // Thử kết nối, nếu lỗi sẽ tự động được log ra console và có thể làm crash dịch vụ Render
-        return ConnectionMultiplexer.Connect(redisConnection);
-    }
-    catch (Exception ex)
-    {
-        // **NẾU BẠN MUỐN ỨNG DỤNG KHÔNG CRASH VÌ REDIS:**
-        Console.WriteLine($"❌ Redis connection failed: {ex.Message}. Allowing service to start.");
-        // Ghi log lỗi và return null/dummy, sau đó cacheService (RedisCacheService) phải xử lý được null này.
-        return null!;
-    }
+    return ConnectionMultiplexer.Connect(redisConnection);
 });
+
 
 
 // 5. MassTransit
