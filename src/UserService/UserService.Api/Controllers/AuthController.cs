@@ -24,12 +24,12 @@ namespace UserService.API.Controllers
         [HttpGet("/api/healthz")] // <-- Change: Explicitly set the absolute path
         public IActionResult HealthCheck() => Ok("Healthy");
 
-        [HttpGet("checkSendmail")] 
-        public async Task<IActionResult> CheckMail([FromQuery] string email)
-        {
-            string checkMail = await _authService.CheckSendMail(email);
-            return Ok(checkMail);
-        }
+        // [HttpGet("checkSendmail")] 
+        // public async Task<IActionResult> CheckMail([FromQuery] string email)
+        // {
+        //     string checkMail = await _authService.CheckSendMail(email);
+        //     return Ok(checkMail);
+        // }
         // GET: api/Auth
         [Authorize]
         [HttpGet("getAll")]

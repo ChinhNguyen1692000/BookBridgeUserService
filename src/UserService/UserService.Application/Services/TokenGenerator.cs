@@ -41,7 +41,7 @@ namespace UserService.Application.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // Sử dụng Id làm NameIdentifier
                 new Claim(ClaimTypes.Email, user.Email), // Thêm email vào claims
-                // new Claim(ClaimTypes.Role, user.UserRole)
+                new Claim(ClaimTypes.Name, user.Username), // Thêm user vào claims
                 new Claim(JwtRegisteredClaimNames.Jti, jti) // Thêm jti vào claims
             };
 
@@ -75,7 +75,7 @@ namespace UserService.Application.Services
             // Chuyển token thành chuỗi
             var accessToken = tokenHandler.WriteToken(token);
 
-            // Tạo refresh token và lưu DB (giả sử bạn có DbSet<RefreshToken> trong DbContext)
+            // Tạo refresh token và lưu DB
             var refreshTokenObj = new RefreshToken
             {
                 Token = Guid.NewGuid().ToString(),
@@ -92,8 +92,7 @@ namespace UserService.Application.Services
                 Id = user.Id.ToString(), // Chuyển Guid sang string
                 Username = user.Username,
                 Email = user.Email,
-                // Role = roleNames.FirstOrDefault() ?? "User", // Dùng Role đầu tiên cho tương thích ngược
-                Roles = roleNames, // <-- THÊM DANH SÁCH MỚI
+                Roles = roleNames, // THÊM DANH SÁCH MỚI
                 AccessToken = accessToken,
                 RefreshToken = refreshTokenObj.Token
             };

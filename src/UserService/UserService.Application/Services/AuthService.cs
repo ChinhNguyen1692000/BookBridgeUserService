@@ -423,9 +423,9 @@ namespace UserService.Application.Services
             // 1. Kiểm tra người dùng tồn tại
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
 
-            // Nếu user == null thì ném exception để Controller bắt và trả về lỗi
+            // Check nếu user == null 
             if (user == null)
-                throw new InvalidOperationException("Email chưa được đăng ký trong hệ thống."); // 👈 Thay đổi ở đây
+                throw new InvalidOperationException("Email chưa được đăng ký trong hệ thống.");
 
             try
             {
@@ -433,13 +433,13 @@ namespace UserService.Application.Services
                 // Giả định _otpService.GenerateAndStoreOtpAsync trả về string OTP
                 var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.ResetPassword);
 
-                // **BỎ QUA:** Không gửi email nữa, nên loại bỏ dòng này
+                // Gửi email
                 await _emailService.SendPasswordResetEmail(user.Email, otpCode);
 
                 await _context.SaveChangesAsync();
 
                 // 3. Trả về OTP cho Controller
-                return otpCode; // 👈 Thay đổi ở đây
+                return otpCode;
             }
             catch (Exception ex)
             {
