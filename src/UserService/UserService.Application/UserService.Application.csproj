@@ -7,29 +7,31 @@
   </PropertyGroup>
 
 
-<ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Common\Common.csproj" />
     <ProjectReference Include="..\UserService.Domain\UserService.Domain.csproj" />
     <ProjectReference Include="..\UserService.Infrastructure\UserService.Infrastructure.csproj" />
   </ItemGroup>
 
 
-<ItemGroup>
-  <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-  <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
-  <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-  <PackageReference Include="MassTransit" Version="8.5.4" />
-  <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.4" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
-    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    <PrivateAssets>all</PrivateAssets>
-  </PackageReference>
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9">
-    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    <PrivateAssets>all</PrivateAssets>
-  </PackageReference>
-  <PackageReference Include="StackExchange.Redis" Version="2.9.25" />
-  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
-</ItemGroup>
-  
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    <PackageReference Include="MassTransit" Version="8.5.4" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.4" />
+    
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.17">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.17">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    
+    <PackageReference Include="StackExchange.Redis" Version="2.9.25" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
+  </ItemGroup>
+
 </Project>
