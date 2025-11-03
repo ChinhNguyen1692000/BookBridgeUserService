@@ -398,6 +398,11 @@ namespace UserService.Application.Services
             if (!isPasswordValid)
                 throw new UnauthorizedAccessException("Password is incorrect.");
 
+            if (user.IsBan)
+            {
+                throw new InvalidOperationException("Account is ban. Contact Admin to know more information");
+            }
+
             // 2. Kiểm tra IsActive
             if (!user.IsActive)
             {
@@ -540,6 +545,11 @@ namespace UserService.Application.Services
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == payload.Email);
 
+            if (user.IsBan)
+            {
+                throw new InvalidOperationException("Account is ban. Contact Admin to know more information");
+            }
+
             // Temporary variable to hold the newly generated password if a new account is created
             string newRandomPassword = null;
 
@@ -658,12 +668,6 @@ namespace UserService.Application.Services
             if (!string.IsNullOrWhiteSpace(request.Phone))
             {
                 user.Phone = request.Phone;
-            }
-            else
-            {
-                // Tùy theo logic nghiệp vụ, nếu request.Phone rỗng, bạn có thể gán null hoặc giữ giá trị cũ.
-                // Giả sử logic là cho phép xóa số điện thoại nếu gửi lên rỗng
-                user.Phone = null;
             }
 
             // --- 4. LƯU THAY ĐỔI VÀO DATABASE ---
@@ -788,12 +792,26 @@ namespace UserService.Application.Services
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             // 2. Tạo và lưu OTP
-            // Giả định _otpService.GenerateAndStoreOtpAsync trả về string OTP
+            // _otpService.GenerateAndStoreOtpAsync trả về string OTP
             var otpCode = await _otpService.GenerateAndStoreOtpAsync(user.Id, OtpType.ResetPassword);
 
-            // **BỎ QUA:** Không gửi email nữa, nên loại bỏ dòng này
             await _emailService.SendPasswordResetEmail(user.Email, otpCode);
             return "Send Mail OK";
+        }
+
+        public async Task<string> ToggleUserBanStatusAsync(Guid userId)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == userId)
+        ?? throw new NotFoundException($"Người dùng với ID '{userId}' không tồn tại.");
+
+            user.IsBan = !user.IsBan;
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return user.IsBan
+                ? $"Người dùng '{user.Email}' đã bị Ban."
+                : $"Người dùng '{user.Email}' đã được Unban.";
         }
     }
 }

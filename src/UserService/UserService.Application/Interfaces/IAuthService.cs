@@ -44,5 +44,7 @@ namespace UserService.Application.Interfaces
         Task<string> DeleteUserAsync(Guid userId);
 
         Task<string> CheckSendMail(string email);
+
+        Task<string> ToggleUserBanStatusAsync(Guid userId);
     }
 }

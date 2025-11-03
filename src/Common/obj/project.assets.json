@@ -2670,11 +2670,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\Common\\Common.csproj",
+      "projectUniqueName": "E:\\My githhub repo(All Micro Serivces)\\BookBridgeUserService\\src\\Common\\Common.csproj",
       "projectName": "Common",
-      "projectPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\Common\\Common.csproj",
+      "projectPath": "E:\\My githhub repo(All Micro Serivces)\\BookBridgeUserService\\src\\Common\\Common.csproj",
       "packagesPath": "C:\\Users\\Chinh\\.nuget\\packages\\",
-      "outputPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\Common\\obj\\",
+      "outputPath": "E:\\My githhub repo(All Micro Serivces)\\BookBridgeUserService\\src\\Common\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Chinh\\AppData\\Roaming\\NuGet\\NuGet.Config"

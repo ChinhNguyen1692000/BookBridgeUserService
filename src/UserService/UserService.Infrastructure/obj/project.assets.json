@@ -2622,11 +2622,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj",
+      "projectUniqueName": "E:\\My githhub repo(All Micro Serivces)\\BookBridgeUserService\\src\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj",
       "projectName": "UserService.Infrastructure",
-      "projectPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj",
+      "projectPath": "E:\\My githhub repo(All Micro Serivces)\\BookBridgeUserService\\src\\UserService\\UserService.Infrastructure\\UserService.Infrastructure.csproj",
       "packagesPath": "C:\\Users\\Chinh\\.nuget\\packages\\",
-      "outputPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Infrastructure\\obj\\",
+      "outputPath": "E:\\My githhub repo(All Micro Serivces)\\BookBridgeUserService\\src\\UserService\\UserService.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Chinh\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -2641,8 +2641,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj": {
-              "projectPath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj"
+            "E:\\My githhub repo(All Micro Serivces)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj": {
+              "projectPath": "E:\\My githhub repo(All Micro Serivces)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj"
             }
           }
         }

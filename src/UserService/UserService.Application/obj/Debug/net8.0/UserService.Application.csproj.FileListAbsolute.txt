@@ -84,3 +84,25 @@ E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserServic
 E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\UserService.Application.pdb
 E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\UserService.Application.genruntimeconfig.cache
 E:\My githhub repo(UserSerivce)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\ref\UserService.Application.dll
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\bin\Debug\net8.0\UserService.Application.deps.json
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\bin\Debug\net8.0\UserService.Application.runtimeconfig.json
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\bin\Debug\net8.0\UserService.Application.dll
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\bin\Debug\net8.0\UserService.Application.pdb
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\bin\Debug\net8.0\Common.dll
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\bin\Debug\net8.0\UserService.Domain.dll
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\bin\Debug\net8.0\UserService.Infrastructure.dll
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\bin\Debug\net8.0\Common.pdb
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\bin\Debug\net8.0\UserService.Domain.pdb
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\bin\Debug\net8.0\UserService.Infrastructure.pdb
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\UserService.Application.csproj.AssemblyReference.cache
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\UserService.Application.GeneratedMSBuildEditorConfig.editorconfig
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\UserService.Application.AssemblyInfoInputs.cache
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\UserService.Application.AssemblyInfo.cs
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\UserService.Application.csproj.CoreCompileInputs.cache
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\UserService.Application.sourcelink.json
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\UserServ.9A0DA653.Up2Date
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\UserService.Application.dll
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\refint\UserService.Application.dll
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\UserService.Application.pdb
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\UserService.Application.genruntimeconfig.cache
+E:\My githhub repo(All Micro Serivces)\BookBridgeUserService\src\UserService\UserService.Application\obj\Debug\net8.0\ref\UserService.Application.dll

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CDR+rf7nr+M=",
+  "dgSpecHash": "jaewTa67Nlc=",
   "success": true,
-  "projectFilePath": "E:\\My githhub repo(UserSerivce)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj",
+  "projectFilePath": "E:\\My githhub repo(All Micro Serivces)\\BookBridgeUserService\\src\\UserService\\UserService.Domain\\UserService.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

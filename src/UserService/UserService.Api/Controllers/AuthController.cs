@@ -386,5 +386,41 @@ namespace UserService.API.Controllers
                 return StatusCode(500, new { message = "Internal server error: " + ex.Message });
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPatch("{id}/ban-toggle")]
+        public async Task<IActionResult> ToggleUserBanStatusAsync(Guid id)
+        {
+            var currentUserIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!string.IsNullOrEmpty(currentUserIdClaim) && Guid.TryParse(currentUserIdClaim, out var currentUserId) && currentUserId == id)
+            {
+                // Trả về 403 Forbidden hoặc 400 BadRequest để cấm người dùng tự xóa mình
+                return StatusCode(403, new { message = "Admin không được tự Ban tài khoản của chính mình thông qua API này." });
+            }
+
+            try
+            {
+                // Xử lý logic xóa (bao gồm cả ràng buộc, kiểm tra quyền và NotFound) sẽ nằm trong service.
+                var message = await _authService.ToggleUserBanStatusAsync(id);
+
+                // Nếu service trả về thành công
+                return Ok(new { message = message ?? $"Trạng thái tài khoản người dùng với ID '{id}' đã được thay đổi thành công." });
+            }
+            catch (Application.CustomExceptions.NotFoundException ex)
+            {
+                // Bắt lỗi khi không tìm thấy người dùng
+                return NotFound(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Bắt lỗi về ràng buộc: Ví dụ: "Không thể xóa người dùng vì có đơn hàng/bài đăng liên quan."
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Bắt lỗi server chung (500)
+                return StatusCode(500, new { message = "Lỗi hệ thống khi Ban hoặc UnBan người dùng: " + ex.Message });
+            }
+        }
     }
 }
